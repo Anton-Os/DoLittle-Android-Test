@@ -157,7 +157,7 @@ fun HomeView(){
                                 modifier = Modifier.weight(0.85F).fillMaxWidth(),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                for (t in MainActivity.companions[modeIdx.value - 1].getDialouges()) Text("\n" + t)
+                                for (t in MainActivity.companions[modeIdx.value - 1].getDialouges()) Text("\n" + t.content)
                             }
                         }
                     }

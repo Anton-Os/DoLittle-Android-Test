@@ -29,5 +29,5 @@ public class Script {
     }
 
     public ArrayList<ScriptContent> getScriptContents(){ return scriptContents; }
-    private ArrayList<ScriptContent> scriptContents;
+    private ArrayList<ScriptContent> scriptContents = new ArrayList<>();
 }

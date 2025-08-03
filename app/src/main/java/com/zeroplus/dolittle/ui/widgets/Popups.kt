@@ -116,7 +116,7 @@ fun Welcome_PopupContent(dismissCallback: ()-> Unit = {}){
         )
 
         // Text("Never miss a thought\n\n", textAlign = TextAlign.Center)
-        Button(onClick = dismissCallback, modifier = Modifier.weight(1.0F)) {
+        Button(onClick = dismissCallback, modifier = Modifier.weight(0.5F)) {
             Text("Begin!")
         }
     }

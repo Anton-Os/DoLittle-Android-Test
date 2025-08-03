@@ -7,14 +7,11 @@ public class Companion {
         name = nameArg;
         role = roleArg;
     }
-
-
     public String getName(){ return name; }
     private String name;
-
     public String getRole(){ return role; }
     private String role;
-
     public ArrayList<Script.ScriptContent> getDialouges(){ return dialouges; }
+    public Script.ScriptContent getRandAdvice(){ return dialouges.get((int)Math.floor(Math.random() * dialouges.size())); }
     protected ArrayList<Script.ScriptContent> dialouges = new ArrayList<>();
 }

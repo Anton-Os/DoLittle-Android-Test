@@ -9,36 +9,61 @@ import androidx.annotation.RequiresApi;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.zeroplus.dolittle.model.Avatar;
 import com.zeroplus.dolittle.model.Script;
-import com.zeroplus.dolittle.model.Script;
 
 public class ScriptManager {
 
     public ScriptManager() {
-        // Initialize scripts with default values
-        loadScripts("");
+        loadScripts(""); // test
 
         // Set up the timed event callbacks
-        /* timedEvent.setOnTick(new TimedEvent.Callback() {
+        timedEvent.setOnTick(new Callback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void execute() {
                 scripts.put(new Script("New Script"), new Avatar("Default Avatar"));
             }
         });
-        timedEvent.setOnFinish(new TimedEvent.Callback() {
+        timedEvent.setOnFinish(new Callback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void execute() {
                 scripts.put(new Script("Last Script"), new Avatar("Default Avatar"));
             }
-        }); */
+        });
         timedEvent.start();
+    }
+
+    @SuppressLint("NewApi")
+    public void loadScripts(String filePath) {
+        if(filePath.isEmpty()) { // test
+            scripts.put(new Script("Hello how are you?"), new Avatar("Avatar 1"));
+            scripts.put(new Script("Im Good, thanks"), new Avatar("Avatar 2"));
+            scripts.put(new Script("Lovely weather today"), new Avatar("Avatar 3"));
+            scripts.put(new Script("I suppose so"), new Avatar("Avatar 4"));
+        } else {
+            StringBuilder strBuilder = new StringBuilder();
+
+            File scriptFile = new File(filePath);
+            try(FileReader reader = new FileReader(scriptFile)){
+                int readChar = reader.read();
+                while(readChar != -1) {
+                    strBuilder.append(readChar);
+                    readChar = reader.read();
+                }
+            } catch (IOException e) {
+                Log.e("ScriptManager", "Error loading scripts: " + e.getMessage());
+            }
+
+            // TODO: Parse built String and append data
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -54,14 +79,6 @@ public class ScriptManager {
         } catch (IOException e) {
             Log.e("ScriptManager", "Error saving scripts: " + e.getMessage());
         }
-    }
-
-    @SuppressLint("NewApi")
-    public void loadScripts(String filePath) {
-        scripts.put(new Script("Hello how are you?"), new Avatar("Avatar 1"));
-        scripts.put(new Script("Im Good, thanks"), new Avatar("Avatar 2"));
-        scripts.put(new Script("Lovely weather today"), new Avatar("Avatar 3"));
-        scripts.put(new Script("I suppose so"), new Avatar("Avatar 4"));
     }
 
     // Callback interface for TimedEvent
