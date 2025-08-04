@@ -2,6 +2,10 @@ package com.zeroplus.dolittle.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val LightBlue = Color(0xFFd7e4f7)
+val LightRed = Color(0xFFf7d7e4)
+val LightGray = Color(0xFFeff0ed)
+
 val OffWhite = Color(0xFFfffdeb)
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

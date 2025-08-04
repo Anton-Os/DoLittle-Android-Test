@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
@@ -28,7 +29,7 @@ fun LaunchView(){
     })
 
     DoLittleTheme {
-        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
+        Box(Modifier.fillMaxSize().background(Color(0xFFD0BCFF)), contentAlignment = Alignment.Center) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("DoLittle", fontSize = 60.sp, fontWeight = FontWeight.Bold)
                 Text("Your Thoughts, Captured")

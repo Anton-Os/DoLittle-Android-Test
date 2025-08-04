@@ -9,7 +9,7 @@ public class AIManager {
         void onSuccess(String generatedText);
         void onFailure(Throwable error); // Include error handling for robust code
     }
-    public String promptToTxt(String prompt, TextGenerationCallback callback){
+    public static String promptToTxt(String prompt, TextGenerationCallback callback){
         Content content = new Content.Builder().addText(prompt).build();
         // model.generateContent(prompt, );
 

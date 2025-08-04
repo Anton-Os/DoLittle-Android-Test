@@ -15,26 +15,22 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
-import androidx.media3.common.util.Log
 
 import com.zeroplus.dolittle.MainActivity
 import com.zeroplus.dolittle.model.managers.PermManager
 import com.zeroplus.dolittle.ui.theme.DoLittleTheme
-import kotlinx.coroutines.delay
-import java.io.Serializable
 
 @Preview
 @Composable
-fun SignUpView(){
+fun OnboardView(){
     LaunchedEffect(key1 = Unit, block = {
         if(PermManager.granted(PermManager.Perm.BACKGROUND_PERMS)
             && PermManager.granted(PermManager.Perm.RECORD_AUDIO)
@@ -51,7 +47,7 @@ fun SignUpView(){
     )
 
     DoLittleTheme {
-        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+        Box(Modifier.fillMaxSize().background(Color(0xFFD0BCFF))) {
             Column(Modifier.fillMaxSize()) {
                 // Text("DoLittle", Modifier.weight(0.1F), fontSize = 40.sp, fontWeight = FontWeight.Bold)
                 Text(
@@ -76,7 +72,7 @@ fun SignUpView(){
                         }
                     Box(Modifier.weight(1F))
                 }
-                Divider(Modifier.fillMaxWidth().width(1.dp))
+                Divider(Modifier.fillMaxWidth().width(1.dp), color = Color.Blue)
                 Column(Modifier.weight(0.4F), horizontalAlignment = Alignment.CenterHorizontally) {
                     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Button(onClick = { MainActivity.navController?.navigate("home") }) {

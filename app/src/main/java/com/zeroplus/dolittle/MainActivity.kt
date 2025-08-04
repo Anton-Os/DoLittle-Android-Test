@@ -3,12 +3,8 @@ package com.zeroplus.dolittle
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
 import androidx.activity.compose.BackHandler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,8 +14,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.zeroplus.dolittle.model.Avatar
-import com.zeroplus.dolittle.model.Script
 import com.zeroplus.dolittle.model.companions.Angel
 import com.zeroplus.dolittle.model.companions.Demon
 import com.zeroplus.dolittle.model.companions.Ghost
@@ -28,9 +22,8 @@ import com.zeroplus.dolittle.model.managers.ScriptManager
 import com.zeroplus.dolittle.model.managers.VoiceManager
 import com.zeroplus.dolittle.ui.views.HomeView
 import com.zeroplus.dolittle.ui.views.LaunchView
-import com.zeroplus.dolittle.ui.views.SignUpView
-import java.util.ArrayList
-
+import com.zeroplus.dolittle.ui.views.OnboardView
+import com.zeroplus.dolittle.ui.views.SettingsView
 
 var activity : ComponentActivity? = null
 
@@ -51,8 +44,9 @@ class MainActivity : ComponentActivity() {
                 composable(route = "launch") { LaunchView() }
                 composable(route = "signup") {
                     BackHandler(true){ }
-                    SignUpView()
+                    OnboardView()
                 }
+                composable(route = "settings") { SettingsView() }
                 composable(
                     route = "home" // + "?text={text}",
                     /* arguments = listOf(
@@ -105,6 +99,7 @@ class MainActivity : ComponentActivity() {
         lateinit var voiceManager: VoiceManager
         @kotlin.jvm.JvmField
         var scriptManager : ScriptManager = ScriptManager()
+        @RequiresApi(Build.VERSION_CODES.O)
         var companions : List<com.zeroplus.dolittle.model.Companion> = listOf(
             Angel(), Ghost(), Demon()
         )

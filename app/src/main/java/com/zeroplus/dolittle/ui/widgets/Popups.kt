@@ -26,6 +26,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
@@ -70,7 +71,7 @@ fun ContentPopup(content: @Composable() ()-> Unit, dismissCallback: ()-> Unit = 
             Card(
                 modifier = Modifier.padding(all = 10.dp).fillMaxSize(),
                 elevation = CardDefaults.cardElevation(defaultElevation = 20.dp),
-                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
+                colors = CardDefaults.cardColors(Color(0xFFfffdeb)),
             ) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { content() }
             }

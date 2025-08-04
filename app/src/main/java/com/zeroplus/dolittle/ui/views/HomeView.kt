@@ -41,6 +41,7 @@ import com.zeroplus.dolittle.MainActivity
 import com.zeroplus.dolittle.model.Avatar
 import com.zeroplus.dolittle.model.Script
 import com.zeroplus.dolittle.ui.theme.DoLittleTheme
+import com.zeroplus.dolittle.ui.theme.LightGray
 import com.zeroplus.dolittle.ui.widgets.ContentPopup
 import com.zeroplus.dolittle.ui.widgets.DatePopup
 import com.zeroplus.dolittle.ui.widgets.ScriptContentPane
@@ -63,17 +64,17 @@ fun HomeView(){
             gesturesEnabled = false
         ) {
             Scaffold(
-                modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+                modifier = Modifier.fillMaxSize(),
                 floatingActionButton = {
                     FloatingActionButton(
-                        onClick = {},
+                        onClick = { isHelpShown.value = !isHelpShown.value },
                         containerColor = MaterialTheme.colorScheme.tertiary,
                         contentColor = Color(0xAAEEEEEE)
                     ) { Icon(Icons.Sharp.MoreVert, "Floating action button.") }
                 }
             ) { insets ->
                 Row(Modifier.padding(insets).fillMaxSize()) {
-                    Box(Modifier.weight(0.25F).fillMaxSize().background(MaterialTheme.colorScheme.secondary)) {
+                    Box(Modifier.weight(0.25F).fillMaxSize().background(Color(0xFFD0BCFF))) {
                         Column(
                             Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -104,18 +105,15 @@ fun HomeView(){
                             )
                             IconButton(
                                 modifier = Modifier.weight(0.75F),
-                                onClick = {},
+                                onClick = { MainActivity.navController?.navigate("settings") },
                                 enabled = true,
                             ) {
                                 Icon(Icons.Sharp.Settings, "Information")
                             }
                         }
                     }
-                    Box(Modifier.weight(1F).fillMaxSize()) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-//                          modifier = Modifier.verticalScroll(rememberScrollState()).weight(weight = 1f, fill = false)
-                        ) {
+                    Box(Modifier.weight(1F).fillMaxSize().background(LightGray)) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally,) {
                             Column(modifier = Modifier.weight(0.15F).fillMaxWidth()){
                                 Text("Now:", Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                                 Row(verticalAlignment = Alignment.CenterVertically){
