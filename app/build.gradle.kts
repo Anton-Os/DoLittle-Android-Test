@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -39,6 +41,13 @@ android {
         compose = true
         buildConfig = true
     }
+    configurations.all {
+        exclude(module = "protobuf-java")
+    }
+    packaging {
+        exclude("META-INF/INDEX.LIST")
+        exclude("META-INF/DEPENDENCIES")
+    }
 }
 
 dependencies {
@@ -52,7 +61,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.generativeai)
-    implementation(libs.protolite.well.known.types)
+    implementation(libs.google.cloud.speech)
+    // implementation(libs.protolite.well.known.types)
     implementation(libs.androidx.navigation.compose.android)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.cronet.embedded)
@@ -62,8 +72,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    // implementation("com.google.cloud:google-cloud-speech:1.29.1")
+    implementation ("com.github.massoudss:waveformSeekBar:5.0.2")
+    implementation ("com.github.lincollincol:amplituda:2.2.2")
     // implementation( "com.google.auth:google-auth-library-oauth2-http:0.26.0")
     // implementation("io.grpc:grpc-okhttp:1.38.1")
     // implementation("io.grpc:grpc-stub:1.39.0")

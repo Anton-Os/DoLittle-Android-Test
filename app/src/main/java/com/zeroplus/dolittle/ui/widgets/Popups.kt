@@ -104,13 +104,13 @@ fun DatePopup(dismissCallback: ()-> Unit = {}){
 @Composable
 fun Welcome_PopupContent(dismissCallback: ()-> Unit = {}){
     Column(horizontalAlignment = Alignment.CenterHorizontally){
-        Text("\nWelcome! Start capturing your thoughts and gain valuable insights about yourself using AI",
+        Text("\nNever miss a thought! Let AI capture your brainstorming so you never miss anything",
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1.25F)
         )
 
         // Text("Start recording and transcribing your conversations\n\n", textAlign = TextAlign.Center)
-        Image(painter = painterResource(R.drawable.baked_goods_1),
+        Image(painter = painterResource(R.drawable.mic_closed),
         // Icon(Icons.Sharp.PlayArrow,
             modifier = Modifier.weight(2F),
             contentDescription = "Device Image"
@@ -118,7 +118,7 @@ fun Welcome_PopupContent(dismissCallback: ()-> Unit = {}){
 
         // Text("Never miss a thought\n\n", textAlign = TextAlign.Center)
         Button(onClick = dismissCallback, modifier = Modifier.weight(0.5F)) {
-            Text("Begin!")
+            Text("Start Recording")
         }
     }
 }

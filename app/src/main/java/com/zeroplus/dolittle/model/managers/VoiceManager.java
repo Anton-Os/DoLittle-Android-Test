@@ -2,31 +2,40 @@ package com.zeroplus.dolittle.model.managers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log; // Recommended for logging in Android
 
+import com.google.cloud.speech.v1.SpeechClient;
+import com.google.cloud.speech.v1.SpeechSettings;
 import com.zeroplus.dolittle.MainActivity; // Assuming MainActivity.scriptManager is static
 import com.zeroplus.dolittle.model.Avatar;
 import com.zeroplus.dolittle.model.Script;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class VoiceManager {
 
-    private final SpeechRecognizer speechRecognizer;
-    private final SpeechRecognitionListenerImpl speechRecognitionListener;
-
     public VoiceManager(Context context) {
-        this.speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
-        this.speechRecognitionListener = new SpeechRecognitionListenerImpl(); // Instantiate the inner class
+        // Media Recorder
+        mediaRecorder = new MediaRecorder();
+        // Built-In Speech Recognizer
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
+        speechRecognitionListener = new SpeechRecognitionListenerImpl(); // Instantiate the inner class
+        // Google Speech-to-Text
+        try { speechClient = SpeechClient.create(); }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    // Inner class to implement RecognitionListener, similar to Kotlin's 'object'
     private class SpeechRecognitionListenerImpl implements RecognitionListener {
         @Override
         public void onReadyForSpeech(Bundle params) {
@@ -82,7 +91,8 @@ public class VoiceManager {
             if (words != null) {
                 for (String word : words) {
                     Map<Script, Avatar> tempMap = new HashMap<>();
-                    tempMap.put(new Script(word), new Avatar("Me"));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                        tempMap.put(new Script(word), new Avatar("Me"));
 
                     if (MainActivity.scriptManager != null) {
                         MainActivity.scriptManager.scripts.putAll(tempMap);
@@ -95,19 +105,45 @@ public class VoiceManager {
         }
     }
 
-    public void setupSpeech() {
-        speechRecognizer.setRecognitionListener(speechRecognitionListener);
+    public static void setupSpeech(/* String outputFile */) {
+        // Media Recorder
+
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        // mediaRecorder.setOutputFile(outputFiles)
+
+        try {
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+        } catch (IOException e) {
+            Log.e("VoiceManager", "Recording failed: $e");
+            throw new RuntimeException(e);
+        }
+
+        // Built-In Speech Recognizer
+        /* speechRecognizer.setRecognitionListener(speechRecognitionListener);
 
         Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         // speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault()); // Uncomment if you need to set locale
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak Now");
 
-        speechRecognizer.startListening(speechRecognizerIntent);
+        speechRecognizer.startListening(speechRecognizerIntent); */
+
+        // Google Speech-to-Text
+
+        // TODO: Implementation Goes Here
     }
 
-    // Don't forget to destroy the SpeechRecognizer when no longer needed
     public void destroy() {
         if (speechRecognizer != null) speechRecognizer.destroy();
     }
+
+    private static SpeechRecognizer speechRecognizer;
+    private static SpeechRecognitionListenerImpl speechRecognitionListener;
+
+    private static MediaRecorder mediaRecorder;
+
+    private static SpeechClient speechClient; // From Google Speech-to-Text
 }

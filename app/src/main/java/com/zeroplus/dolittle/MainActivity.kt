@@ -70,8 +70,6 @@ class MainActivity : ComponentActivity() {
         println("onResume() triggered")
 
         // if(!PermManager.granted(arrayOf(PermManager.Perm.recordAudio))) println("Permission not granted!")
-        // else voiceManager.setupSpeech()
-        // else if(speechRecognizer.granted()) println("Speech recognizer not granted!")
     }
 
     override fun onDestroy() {
