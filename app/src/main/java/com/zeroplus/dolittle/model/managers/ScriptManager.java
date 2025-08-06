@@ -27,16 +27,12 @@ public class ScriptManager {
         timedEvent.setOnTick(new Callback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void execute() {
-                scripts.put(new Script("New Script"), new Avatar("Me"));
-            }
+            public void execute() { scripts.put(new Script("What should I do today?"), new Avatar("Me")); }
         });
         timedEvent.setOnFinish(new Callback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void execute() {
-                scripts.put(new Script("Last Script"), new Avatar("Me"));
-            }
+            public void execute() {scripts.put(new Script("How should I end my day?"), new Avatar("Me")); }
         });
         timedEvent.start();
     }

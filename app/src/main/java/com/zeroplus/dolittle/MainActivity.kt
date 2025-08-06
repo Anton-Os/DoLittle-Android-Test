@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // voiceManager = VoiceManager(this)
+        voiceManager = VoiceManager(this)
         // createNotificationChannel("com.dolittle.notification", "DoLittle is here!")
 
         setContent {

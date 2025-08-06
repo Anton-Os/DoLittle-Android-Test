@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.zeroplus.dolittle.MainActivity
+import com.zeroplus.dolittle.activity
 import com.zeroplus.dolittle.model.Avatar
 import com.zeroplus.dolittle.model.Script
 import com.zeroplus.dolittle.model.managers.VoiceManager
@@ -45,6 +46,7 @@ import com.zeroplus.dolittle.ui.widgets.ContentPopup
 import com.zeroplus.dolittle.ui.widgets.DatePopup
 import com.zeroplus.dolittle.ui.widgets.ScriptContentPane
 import com.zeroplus.dolittle.ui.widgets.Welcome_PopupContent
+import java.io.File
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Date
@@ -76,13 +78,8 @@ fun HomeView(){
                     ) { Icon(Icons.Sharp.MoreVert, "Floating action button.") }
                 }
             ) { insets ->
-                Row(Modifier
-                    .padding(insets)
-                    .fillMaxSize()) {
-                    Box(Modifier
-                        .weight(0.25F)
-                        .fillMaxSize()
-                        .background(Color(0xFFD0BCFF))) {
+                Row(Modifier.padding(insets).fillMaxSize()) {
+                    Box(Modifier.weight(0.25F).fillMaxSize().background(Color(0xFFD0BCFF))) {
                         Column(
                             Modifier.fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -91,13 +88,15 @@ fun HomeView(){
                             Column(Modifier.weight(5.0F), horizontalAlignment = Alignment.CenterHorizontally) {
                                 Button(onClick = { modeIdx.value = 0 }){ Text("Y") }
                                 // Menu Option
-                                Divider(Modifier
-                                    .fillMaxWidth()
-                                    .width(1.dp))
+                                Divider(Modifier.fillMaxWidth().width(1.dp))
 
                                 for(b in 1..MainActivity.companions.size)
                                     Button(
-                                        onClick = { modeIdx.value = b },
+                                        onClick = {
+                                            modeIdx.value = b
+                                            val script = MainActivity.scriptManager.scripts.keys.last()
+                                            if(script != null) MainActivity.companions[b - 1].query(script.printedScript)
+                                        },
                                         colors = ButtonColors(
                                             containerColor = MaterialTheme.colorScheme.primary,
                                             contentColor = Color(0xFFEEEEEE),
@@ -122,14 +121,9 @@ fun HomeView(){
                             }
                         }
                     }
-                    Box(Modifier
-                        .weight(1F)
-                        .fillMaxSize()
-                        .background(LightGray)) {
+                    Box(Modifier.weight(1F).fillMaxSize().background(LightGray)) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Column(modifier = Modifier
-                                .weight(0.15F)
-                                .fillMaxWidth()){
+                            Column(modifier = Modifier.weight(0.15F).fillMaxWidth()){
                                 Text("Now:", Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                                 Row(verticalAlignment = Alignment.CenterVertically){
                                     Text(LocalDate.now().monthValue.toString() + " /", Modifier.weight(1F), fontSize = 25.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
@@ -149,10 +143,7 @@ fun HomeView(){
 
                             val scrollState = rememberScrollState()
                             Column(
-                                modifier = Modifier
-                                    .weight(0.85F)
-                                    .fillMaxWidth()
-                                    .verticalScroll(scrollState),
+                                modifier = Modifier.weight(0.85F).fillMaxWidth().verticalScroll(scrollState),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ){
                                 for(s in MainActivity.scriptManager.scripts)
@@ -165,16 +156,12 @@ fun HomeView(){
                     }
 
                     if(modeIdx.value != 0) // Companion Selected
-                    Box(Modifier
-                        .weight(0.35F)
-                        .fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Box(Modifier.weight(0.35F).fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally){
                             Text(MainActivity.companions[modeIdx.value - 1].name, Modifier.weight(0.15F))
 
                             Column(
-                                modifier = Modifier
-                                    .weight(0.85F)
-                                    .fillMaxWidth(),
+                                modifier = Modifier.weight(0.85F).fillMaxWidth(),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 for (t in MainActivity.companions[modeIdx.value - 1].getDialouges()) Text("\n" + t.content)
@@ -190,8 +177,10 @@ fun HomeView(){
                 isHelpShown.value = !isHelpShown.value
                 val formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault())
                 val timestamp : String = formatter.format( Date())
+                val outputFile : File = File(activity?.filesDir, "Audio" + timestamp + ".3gp") // ".mp3")
+                println("Using audio file " + outputFile.absolutePath + ", from dir " + activity?.filesDir)
 
-                VoiceManager.setupSpeech()
+                // VoiceManager.setupSpeech(outputFile.absolutePath)
             })
         }) { isHelpShown.value = !isHelpShown.value }
 

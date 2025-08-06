@@ -30,10 +30,8 @@ public class VoiceManager {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
         speechRecognitionListener = new SpeechRecognitionListenerImpl(); // Instantiate the inner class
         // Google Speech-to-Text
-        try { speechClient = SpeechClient.create(); }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        // try { speechClient = SpeechClient.create(); }
+        // catch (IOException e) { throw new RuntimeException(e); }
     }
 
     private class SpeechRecognitionListenerImpl implements RecognitionListener {
@@ -105,13 +103,13 @@ public class VoiceManager {
         }
     }
 
-    public static void setupSpeech(/* String outputFile */) {
+    public static void setupSpeech(String outputFile) {
         // Media Recorder
 
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        // mediaRecorder.setOutputFile(outputFiles)
+        mediaRecorder.setOutputFile(outputFile);
 
         try {
             mediaRecorder.prepare();

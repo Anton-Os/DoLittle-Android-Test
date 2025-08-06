@@ -17,16 +17,4 @@ public class Ghost extends Companion {
         dialouges.add(new Script.ScriptContent("Know this wont last"));
         dialouges.add(new Script.ScriptContent("Cause life goes fast"));
     }
-
-    public String feedback(String inputStr){
-        final String[] genTxt = { "" };
-        AIManager.promptToTxt(inputStr, new AIManager.TextGenerationCallback() {
-            @Override
-            public void onSuccess(String generatedText) { genTxt[0] = generatedText; }
-
-            @Override
-            public void onFailure(Throwable error) { System.out.println("Error is $error"); }
-        });
-        return genTxt[0];
-    }
 }

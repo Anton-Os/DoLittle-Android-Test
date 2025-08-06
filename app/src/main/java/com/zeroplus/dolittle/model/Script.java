@@ -29,5 +29,11 @@ public class Script {
     }
 
     public ArrayList<ScriptContent> getScriptContents(){ return scriptContents; }
+
+    public String getPrintedScript(){
+        StringBuilder printedScript = new StringBuilder();
+        for(ScriptContent s : scriptContents) printedScript.append(s.getContent());
+        return printedScript.toString();
+    }
     private ArrayList<ScriptContent> scriptContents = new ArrayList<>();
 }
