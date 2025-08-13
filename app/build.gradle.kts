@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose.android)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.cronet.embedded)
+    implementation(libs.play.services.tasks)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

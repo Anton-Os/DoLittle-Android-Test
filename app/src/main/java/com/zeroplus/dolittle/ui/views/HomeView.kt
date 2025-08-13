@@ -39,7 +39,6 @@ import com.zeroplus.dolittle.MainActivity
 import com.zeroplus.dolittle.activity
 import com.zeroplus.dolittle.model.Avatar
 import com.zeroplus.dolittle.model.Script
-import com.zeroplus.dolittle.model.managers.VoiceManager
 import com.zeroplus.dolittle.ui.theme.DoLittleTheme
 import com.zeroplus.dolittle.ui.theme.LightGray
 import com.zeroplus.dolittle.ui.widgets.ContentPopup
@@ -86,7 +85,17 @@ fun HomeView(){
                         ) {
                             // Button(onClick = { }) { Image(imageVector = Icons.Filled.KeyboardArrowUp) } // Menu Option
                             Column(Modifier.weight(5.0F), horizontalAlignment = Alignment.CenterHorizontally) {
-                                Button(onClick = { modeIdx.value = 0 }){ Text("Y") }
+                                Button(
+                                    onClick = { modeIdx.value = 0 },
+                                    colors = ButtonColors(
+                                        containerColor = if(modeIdx.value != 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
+                                        contentColor = if(modeIdx.value != 0) Color(0xFFEEEEEE) else Color(0xFF0000FF),
+                                        disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5F),
+                                        disabledContentColor = Color(0xFFEEEEEE).copy(alpha = 0.5F)
+                                    )
+                                ){
+                                    Text("Y")
+                                }
                                 // Menu Option
                                 Divider(Modifier.fillMaxWidth().width(1.dp))
 
@@ -95,11 +104,11 @@ fun HomeView(){
                                         onClick = {
                                             modeIdx.value = b
                                             val script = MainActivity.scriptManager.scripts.keys.last()
-                                            if(script != null) MainActivity.companions[b - 1].query(script.printedScript)
+                                            if(script != null) MainActivity.companions[b - 1].getAdvice(script.printedScript)
                                         },
                                         colors = ButtonColors(
-                                            containerColor = MaterialTheme.colorScheme.primary,
-                                            contentColor = Color(0xFFEEEEEE),
+                                            containerColor = if(modeIdx.value != b) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
+                                            contentColor = if(modeIdx.value != b) Color(0xFFEEEEEE) else Color(0xFF0000FF),
                                             disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5F),
                                             disabledContentColor = Color(0xFFEEEEEE).copy(alpha = 0.5F)
                                         )

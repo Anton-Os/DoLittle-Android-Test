@@ -2,11 +2,16 @@ package com.zeroplus.dolittle.model;
 
 import android.os.Build;
 
-import com.zeroplus.dolittle.model.managers.AIManager;
+import androidx.annotation.RequiresApi;
+
+import com.zeroplus.dolittle.model.managers.GeminiAPI;
 
 import java.util.ArrayList;
 
-public abstract class Companion {
+import kotlinx.coroutines.BuildersKt;
+import kotlinx.coroutines.GlobalScope;
+
+public class Companion extends GeminiAPI {
     public Companion(String nameArg, String roleArg){
         name = nameArg;
         role = roleArg;
@@ -18,30 +23,21 @@ public abstract class Companion {
     private String role;
 
     // private Color color = LightGray
-    public Script.ScriptContent query(String inputStr) {
-        Script.ScriptContent[] content = null;
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    // public Future<Script.ScriptContent> query(String inputStr) {
+    public Script.ScriptContent getAdvice(String inputStr) throws InterruptedException {
+        String content = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-            content = new Script.ScriptContent[]{ new Script.ScriptContent("") };
-            Script.ScriptContent[] finalContent = content;
-
-            String prompt = "You must analyze the users thoughts: " + inputStr + "\nYour role is: " + getRole();
-            AIManager.promptToTxt(prompt, new AIManager.TextGenerationCallback() {
-                @Override
-                public void onSuccess(String generatedText) {
-                    finalContent[0] = new Script.ScriptContent(generatedText);
-                    System.out.println("Final content is " + finalContent[0].getContent());
-                    dialouges.add(finalContent[0]);
-                }
-
-                @Override
-                public void onFailure(Throwable error) {
-                    System.out.println("Error is $error");
-                }
-            });
+            String prompt = "\nYour role is: " + getRole() + "In one sentence, provide a response to the users latest thought:" + inputStr;
+            content = BuildersKt.runBlocking(GlobalScope.INSTANCE.getCoroutineContext(),
+                (scope, continuation) -> promptToTxt(prompt, continuation)
+            );
+            /* content = BuildersKt.launch(GlobalScope.INSTANCE, null, null,
+                    (scope, continuation) -> promptToTxt(prompt, continuation);
+            ); */
         }
-        assert content != null;
-        return content[0];
+        dialouges.add(new Script.ScriptContent(content));
+        return dialouges.get(dialouges.size() - 1);
     }
     public ArrayList<Script.ScriptContent> getDialouges(){ return dialouges; }
     // public Script.ScriptContent getRandAdvice(){ return dialouges.get((int)Math.floor(Math.random() * dialouges.size())); }

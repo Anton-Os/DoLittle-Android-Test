@@ -6,15 +6,14 @@ import androidx.annotation.RequiresApi;
 
 import com.zeroplus.dolittle.model.Companion;
 import com.zeroplus.dolittle.model.Script;
-import com.zeroplus.dolittle.model.managers.AIManager;
 
 public class Demon extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Demon() {
         super("Demon", "Criticizes you and understands your worst vices");
 
-        dialouges.add(new Script.ScriptContent("Love to drink"));
-        dialouges.add(new Script.ScriptContent("Love to smoke"));
-        dialouges.add(new Script.ScriptContent("You stupid bloke"));
+        // dialouges.add(new Script.ScriptContent("Love to drink"));
+        // dialouges.add(new Script.ScriptContent("Love to smoke"));
+        // dialouges.add(new Script.ScriptContent("You stupid bloke"));
     }
 }
