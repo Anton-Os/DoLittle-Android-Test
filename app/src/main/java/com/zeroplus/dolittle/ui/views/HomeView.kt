@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.*
+import androidx.compose.material3.TextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Divider
@@ -31,16 +33,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.zeroplus.dolittle.MainActivity
+import com.zeroplus.dolittle.R
 import com.zeroplus.dolittle.activity
 import com.zeroplus.dolittle.model.Avatar
 import com.zeroplus.dolittle.model.Script
 import com.zeroplus.dolittle.ui.theme.DoLittleTheme
 import com.zeroplus.dolittle.ui.theme.LightGray
+import com.zeroplus.dolittle.ui.theme.typography
 import com.zeroplus.dolittle.ui.widgets.ContentPopup
 import com.zeroplus.dolittle.ui.widgets.DatePopup
 import com.zeroplus.dolittle.ui.widgets.ScriptContentPane
@@ -60,6 +65,8 @@ fun HomeView(){
     val isDateShown = remember { mutableStateOf(false) }
 
     val modeIdx = remember { mutableStateOf(0) }
+
+    var inputTxt = remember { mutableStateOf("What should I do today?") }
 
     DoLittleTheme {
         ModalNavigationDrawer(
@@ -94,7 +101,7 @@ fun HomeView(){
                                         disabledContentColor = Color(0xFFEEEEEE).copy(alpha = 0.5F)
                                     )
                                 ){
-                                    Text("Y")
+                                    Image(painterResource(R.drawable.brain), "Companion Image")
                                 }
                                 // Menu Option
                                 Divider(Modifier.fillMaxWidth().width(1.dp))
@@ -113,7 +120,7 @@ fun HomeView(){
                                             disabledContentColor = Color(0xFFEEEEEE).copy(alpha = 0.5F)
                                         )
                                     ){
-                                        Text(MainActivity.companions[b - 1].getName().substring(0..0))
+                                        Image(painterResource(MainActivity.companions[b - 1].resID), "Companion Image")
                                     } // Menu Option
                             }
                             Switch(
@@ -152,7 +159,7 @@ fun HomeView(){
 
                             val scrollState = rememberScrollState()
                             Column(
-                                modifier = Modifier.weight(0.85F).fillMaxWidth().verticalScroll(scrollState),
+                                modifier = Modifier.weight(1F).fillMaxWidth().verticalScroll(scrollState),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ){
                                 for(s in MainActivity.scriptManager.scripts)
@@ -161,19 +168,27 @@ fun HomeView(){
                                         scriptContent = Script.ScriptContent(s.key.getScriptContents()[0].content)
                                     )
                             }
+
+                            TextField(
+                                value = inputTxt.value,
+                                onValueChange = { inputTxt.value = it },
+                                modifier = Modifier.weight(0.1F)
+                            )
                         }
                     }
 
                     if(modeIdx.value != 0) // Companion Selected
                     Box(Modifier.weight(0.35F).fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally){
-                            Text(MainActivity.companions[modeIdx.value - 1].name, Modifier.weight(0.15F))
+                            Text(MainActivity.companions[modeIdx.value - 1].name, Modifier.weight(0.1F))
 
+                            val scrollState = rememberScrollState()
                             Column(
-                                modifier = Modifier.weight(0.85F).fillMaxWidth(),
+                                modifier = Modifier.weight(0.9F).fillMaxWidth().verticalScroll(scrollState),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                for (t in MainActivity.companions[modeIdx.value - 1].getDialouges()) Text("\n" + t.content)
+                                for (t in MainActivity.companions[modeIdx.value - 1].getDialouges())
+                                    Text("\n" + t.content, style = typography.bodySmall)
                             }
                         }
                     }

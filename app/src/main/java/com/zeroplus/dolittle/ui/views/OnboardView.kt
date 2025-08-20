@@ -55,11 +55,14 @@ fun OnboardView(){
                     Modifier.weight(0.25F),
                     textAlign = TextAlign.Center
                 )
-                Column(Modifier.weight(0.75F)) {
-                    Box(Modifier.weight(1F))
-                    for (p in acceptedPerms)
-                        Row(Modifier.weight(1F), verticalAlignment = Alignment.CenterVertically) {
-                            Checkbox(
+                Box(Modifier.weight(1F).fillMaxWidth().background(Color(0xFFfffdeb))) {
+                    Column() {
+                        Box(Modifier.weight(1F))
+                        for (p in acceptedPerms)
+                            Row(Modifier.weight(1F),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Checkbox(
                                 checked = p.value.value,
                                 onCheckedChange = {
                                     PermManager.request(p.key.second) { isGranted ->
@@ -67,23 +70,26 @@ fun OnboardView(){
                                     }
                                     p.value.value = true // for testing
                                 },
-                            )
-                            Text(p.key.first)
-                        }
-                    Box(Modifier.weight(1F))
+                                )
+                                Text(p.key.first)
+                            }
+                        Box(Modifier.weight(1F))
+                    }
                 }
                 Divider(Modifier.fillMaxWidth().width(1.dp), color = Color.Blue)
                 Column(Modifier.weight(0.4F), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Box(Modifier.weight(1F))
+                    Box(Modifier.fillMaxWidth().weight(0.5F), contentAlignment = Alignment.Center) {
                         Button(onClick = { MainActivity.navController?.navigate("home") }) {
                             Text("Sign Up")
                         }
                     }
-                    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Box(Modifier.fillMaxWidth().weight(0.5F), contentAlignment = Alignment.Center) {
                         TextButton(onClick = { MainActivity.navController?.navigate("home") }) {
                             Text("Continue as Guest")
                         }
                     }
+                    Box(Modifier.weight(1F))
                 }
             }
         }

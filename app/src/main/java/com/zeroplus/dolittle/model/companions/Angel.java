@@ -4,13 +4,14 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.zeroplus.dolittle.R;
 import com.zeroplus.dolittle.model.Companion;
 import com.zeroplus.dolittle.model.Script;
 
 public class Angel extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Angel() {
-        super("Angel", "Offering encouragement and bringing positive vibes to your life");
+        super("Angel", "Offering encouragement and bringing positive vibes to your life", R.drawable.angel);
 
         // dialouges.add(new Script.ScriptContent("Stay Healthy"));
         // dialouges.add(new Script.ScriptContent("Stay Cool"));

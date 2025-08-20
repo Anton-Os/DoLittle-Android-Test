@@ -1,15 +1,18 @@
 package com.zeroplus.dolittle.model;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
-import com.zeroplus.dolittle.model.managers.GeminiAPI;
-
 import java.util.ArrayList;
 
 import kotlinx.coroutines.BuildersKt;
 import kotlinx.coroutines.GlobalScope;
+
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+import androidx.compose.material.icons.Icons;
+import androidx.compose.ui.graphics.vector.ImageVector;
+
+import com.zeroplus.dolittle.R;
+import com.zeroplus.dolittle.model.managers.GeminiAPI;
 
 public class Companion extends GeminiAPI {
     public Companion(String nameArg, String roleArg){
@@ -17,10 +20,20 @@ public class Companion extends GeminiAPI {
         role = roleArg;
     }
 
+    public Companion(String nameArg, String roleArg, int imgResID){
+        name = nameArg;
+        role = roleArg;
+        resourceID = imgResID;
+    }
+
     public String getName(){ return name; }
     private String name;
     public String getRole(){ return role; }
     private String role;
+
+    public int getResID() { return resourceID; }
+
+    private int resourceID = R.drawable.ic_launcher_foreground;
 
     // private Color color = LightGray
     @RequiresApi(api = Build.VERSION_CODES.O)

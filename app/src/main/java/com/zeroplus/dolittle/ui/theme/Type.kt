@@ -9,7 +9,22 @@ import androidx.compose.ui.unit.sp
 import com.zeroplus.dolittle.R
 
 // Set of Material typography styles to start with
-val Typography = Typography(
+val typography = Typography(
+    // Body
+    bodySmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.century_gothic)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.5.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = FontFamily(Font(R.font.century_gothic)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 22.sp,
+        letterSpacing = 0.5.sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.century_gothic)),
         fontWeight = FontWeight.Normal,
@@ -17,6 +32,7 @@ val Typography = Typography(
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
+    // Title
     titleLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.josefin_slab)),
         fontWeight = FontWeight.Normal,
@@ -31,6 +47,7 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
+    // Label
     labelSmall = TextStyle(
         fontFamily = FontFamily(Font(R.font.semi_coder)),
         fontWeight = FontWeight.Medium,
