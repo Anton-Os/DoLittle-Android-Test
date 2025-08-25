@@ -77,6 +77,8 @@ public class ScriptManager {
         }
     }
 
+    public void addScript(Script script, Avatar avatar){ scripts.put(script, avatar); }
+
     // Callback interface for TimedEvent
     public interface Callback { void execute(); }
 

@@ -1,6 +1,7 @@
 package com.zeroplus.dolittle.ui.views
 
 import android.os.Build
+import android.view.KeyEvent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.*
@@ -32,9 +35,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
@@ -81,7 +87,7 @@ fun HomeView(){
                         containerColor = MaterialTheme.colorScheme.tertiary,
                         contentColor = Color(0xAAEEEEEE)
                     // ) {  }
-                    ) { Icon(Icons.Sharp.MoreVert, "Floating action button.") }
+                    ) { Icon(Icons.Sharp.Add, "Floating action button.") }
                 }
             ) { insets ->
                 Row(Modifier.padding(insets).fillMaxSize()) {
@@ -169,10 +175,26 @@ fun HomeView(){
                                     )
                             }
 
+                            val focusRequester = remember { FocusRequester() }
+
                             TextField(
                                 value = inputTxt.value,
                                 onValueChange = { inputTxt.value = it },
-                                modifier = Modifier.weight(0.1F)
+                                modifier = Modifier.weight(0.1F),
+                                /* keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                                keyboardActions = KeyboardActions(
+                                    onDone = {
+                                        MainActivity.scriptManager.addScript(Script(inputTxt.value), Avatar("Me"))
+                                        focusRequester.requestFocus()
+                                    }
+                                ),
+                                modifier = Modifier.weight(0.1F).onKeyEvent {
+                                    if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER){
+                                        focusRequester.requestFocus()
+                                        true
+                                    }
+                                    false
+                                } */
                             )
                         }
                     }

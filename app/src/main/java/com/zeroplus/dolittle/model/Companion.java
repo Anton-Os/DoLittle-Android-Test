@@ -8,8 +8,6 @@ import kotlinx.coroutines.GlobalScope;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
-import androidx.compose.material.icons.Icons;
-import androidx.compose.ui.graphics.vector.ImageVector;
 
 import com.zeroplus.dolittle.R;
 import com.zeroplus.dolittle.model.managers.GeminiAPI;

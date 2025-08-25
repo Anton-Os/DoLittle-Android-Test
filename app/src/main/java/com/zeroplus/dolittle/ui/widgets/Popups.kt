@@ -113,7 +113,7 @@ fun Welcome_PopupContent(dismissCallback: ()-> Unit = {}){
         Image(painter = painterResource(R.drawable.mic_closed),
         // Icon(Icons.Sharp.PlayArrow,
             modifier = Modifier.weight(2F),
-            contentDescription = "Device Image"
+            contentDescription = "Mic Image"
         )
 
         // Text("Never miss a thought\n\n", textAlign = TextAlign.Center)
