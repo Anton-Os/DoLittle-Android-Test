@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import kotlinx.coroutines.BuildersKt;
 import kotlinx.coroutines.GlobalScope;
 
+import android.graphics.Color;
 import android.os.Build;
+import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
@@ -33,7 +35,11 @@ public class Companion extends GeminiAPI {
 
     private int resourceID = R.drawable.ic_launcher_foreground;
 
-    // private Color color = LightGray
+    public int getColorCode() { return colorCodes.first; }
+    public int getAltColorCode() { return colorCodes.second; }
+
+    protected Pair<Integer, Integer> colorCodes = new Pair<>(0xFFfffef0, 0xFFe9f2cb);
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     // public Future<Script.ScriptContent> query(String inputStr) {
     public Script.ScriptContent getAdvice(String inputStr) throws InterruptedException {
@@ -51,6 +57,5 @@ public class Companion extends GeminiAPI {
         return dialouges.get(dialouges.size() - 1);
     }
     public ArrayList<Script.ScriptContent> getDialouges(){ return dialouges; }
-    // public Script.ScriptContent getRandAdvice(){ return dialouges.get((int)Math.floor(Math.random() * dialouges.size())); }
     protected ArrayList<Script.ScriptContent> dialouges = new ArrayList<>();
 }

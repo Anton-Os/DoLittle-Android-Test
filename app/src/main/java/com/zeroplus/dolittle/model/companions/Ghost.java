@@ -1,6 +1,8 @@
 package com.zeroplus.dolittle.model.companions;
 
+import android.graphics.Color;
 import android.os.Build;
+import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
@@ -12,9 +14,6 @@ public class Ghost extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Ghost() {
         super("Ghost", "Reminds you of your past and habits", R.drawable.ghost);
-
-        // dialouges.add(new Script.ScriptContent("Remember the past"));
-        // dialouges.add(new Script.ScriptContent("Know this wont last"));
-        // dialouges.add(new Script.ScriptContent("Cause life goes fast"));
+        colorCodes = new Pair<>(0xFFdcdfe3, 0xFFcfcfcf);
     }
 }

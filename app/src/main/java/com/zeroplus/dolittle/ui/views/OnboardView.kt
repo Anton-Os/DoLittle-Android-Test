@@ -1,9 +1,11 @@
 package com.zeroplus.dolittle.ui.views
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
@@ -55,7 +57,7 @@ fun OnboardView(){
                     Modifier.weight(0.25F),
                     textAlign = TextAlign.Center
                 )
-                Box(Modifier.weight(1F).fillMaxWidth().background(Color(0xFFfffdeb))) {
+                Box(Modifier.weight(1F).fillMaxWidth().background(Color(0xFFfffdeb)).border(width = 2.dp, color = Color(0xAA0000FF))) {
                     Column() {
                         Box(Modifier.weight(1F))
                         for (p in acceptedPerms)
@@ -78,18 +80,18 @@ fun OnboardView(){
                 }
                 Divider(Modifier.fillMaxWidth().width(1.dp), color = Color.Blue)
                 Column(Modifier.weight(0.4F), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(Modifier.weight(1F))
-                    Box(Modifier.fillMaxWidth().weight(0.5F), contentAlignment = Alignment.Center) {
+                    Spacer(Modifier.weight(0.5F))
+                    Box(Modifier.fillMaxWidth().weight(1F), contentAlignment = Alignment.Center) {
                         Button(onClick = { MainActivity.navController?.navigate("home") }) {
                             Text("Sign Up")
                         }
                     }
-                    Box(Modifier.fillMaxWidth().weight(0.5F), contentAlignment = Alignment.Center) {
+                    Box(Modifier.fillMaxWidth().weight(1F), contentAlignment = Alignment.Center) {
                         TextButton(onClick = { MainActivity.navController?.navigate("home") }) {
                             Text("Continue as Guest")
                         }
                     }
-                    Box(Modifier.weight(1F))
+                    Box(Modifier.weight(0.5F))
                 }
             }
         }

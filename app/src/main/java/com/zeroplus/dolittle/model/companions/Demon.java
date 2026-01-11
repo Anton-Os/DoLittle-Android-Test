@@ -1,6 +1,8 @@
 package com.zeroplus.dolittle.model.companions;
 
+import android.graphics.Color;
 import android.os.Build;
+import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
@@ -12,9 +14,6 @@ public class Demon extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Demon() {
         super("Demon", "Criticizes you and understands your worst vices", R.drawable.devil);
-
-        // dialouges.add(new Script.ScriptContent("Love to drink"));
-        // dialouges.add(new Script.ScriptContent("Love to smoke"));
-        // dialouges.add(new Script.ScriptContent("You stupid bloke"));
+        colorCodes = new Pair<>(0xFFf0d5d3, 0xFFf2cbce);
     }
 }

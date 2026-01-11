@@ -1,6 +1,8 @@
 package com.zeroplus.dolittle.model.companions;
 
+import android.graphics.Color;
 import android.os.Build;
+import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
@@ -12,9 +14,6 @@ public class Angel extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Angel() {
         super("Angel", "Offering encouragement and bringing positive vibes to your life", R.drawable.angel);
-
-        // dialouges.add(new Script.ScriptContent("Stay Healthy"));
-        // dialouges.add(new Script.ScriptContent("Stay Cool"));
-        // dialouges.add(new Script.ScriptContent("Stay in School"));
+        colorCodes = new Pair<>(0xFFd3eff0, 0xFFcbedf2);
     }
 }

@@ -17,7 +17,7 @@ private val DarkColorScheme = darkColorScheme(
     secondary = Color(0xFF8073AB),
     tertiary = Color(0xFF160844),
     primaryContainer = Color.Yellow,
-    background = Color(0xFF34383d)
+    background = Color(0xFF34383a)
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -25,7 +25,7 @@ private val LightColorScheme = lightColorScheme(
     secondary = Color(0xFF103998),
     tertiary = Color(0xFFff710cfb),
     primaryContainer = Color.Yellow,
-    background = Color(0xFFfff4ced4)
+    background = Color(0xFFeeeeff)
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

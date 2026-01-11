@@ -1,9 +1,9 @@
 package com.zeroplus.dolittle.model.managers
 
+import com.google.ai.client.generativeai.BuildConfig
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.Content
 import com.google.ai.client.generativeai.type.TextPart
-import com.zeroplus.dolittle.BuildConfig
 
 open class GeminiAPI {
     suspend fun promptToTxt(prompt: String) : String? {
@@ -19,7 +19,7 @@ open class GeminiAPI {
     fun getModel() : GenerativeModel {
         return GenerativeModel(
             "gemini-2.0-flash-001",
-            BuildConfig.apiKey
+            "AIzaSyDLMppK9X-aBVR91qWqQUemTcg80aZNhMU"
         )
     }
 }

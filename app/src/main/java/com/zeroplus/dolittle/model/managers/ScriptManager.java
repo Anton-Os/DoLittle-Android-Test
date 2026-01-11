@@ -27,12 +27,12 @@ public class ScriptManager {
         timedEvent.setOnTick(new Callback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void execute() { scripts.put(new Script("What should I do today?"), new Avatar("Me")); }
+            public void execute() { /* scripts.put(new Script("What should I do today?"), new Avatar("Me")); */ }
         });
         timedEvent.setOnFinish(new Callback() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void execute() {scripts.put(new Script("How should I end my day?"), new Avatar("Me")); }
+            public void execute() { /* scripts.put(new Script("How should I end my day?"), new Avatar("Me")); */ }
         });
         timedEvent.start();
     }
@@ -41,9 +41,9 @@ public class ScriptManager {
     public void loadScripts(String filePath) {
         if(filePath.isEmpty()) { // test
             scripts.put(new Script("Hello how are you?"), new Avatar("Avatar 1"));
-            scripts.put(new Script("Im Good, thanks"), new Avatar("Avatar 2"));
-            scripts.put(new Script("Lovely weather today"), new Avatar("Avatar 3"));
-            scripts.put(new Script("I suppose so"), new Avatar("Avatar 4"));
+            // scripts.put(new Script("Im Good, thanks"), new Avatar("Avatar 2"));
+            // scripts.put(new Script("Lovely weather today"), new Avatar("Avatar 3"));
+            // scripts.put(new Script("I suppose so"), new Avatar("Avatar 4"));
         } else {
             StringBuilder strBuilder = new StringBuilder();
 
