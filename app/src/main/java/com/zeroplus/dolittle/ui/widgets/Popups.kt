@@ -62,7 +62,7 @@ fun ContentPopup(content: @Composable() ()-> Unit, dismissCallback: ()-> Unit = 
             focusable = true,
             usePlatformDefaultWidth = true,
             excludeFromSystemGesture = false,
-            dismissOnClickOutside = true,
+            dismissOnClickOutside = false,
         ),
         popupPositionProvider = PopupPosProvider(),
         onDismissRequest = dismissCallback,

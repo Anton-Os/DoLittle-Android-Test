@@ -15,12 +15,12 @@ import com.zeroplus.dolittle.R;
 import com.zeroplus.dolittle.model.managers.GeminiAPI;
 
 public class Companion extends GeminiAPI {
-    public Companion(String nameArg, String roleArg){
+    public Companion(String nameArg, Pair<String, String> roleArg){
         name = nameArg;
         role = roleArg;
     }
 
-    public Companion(String nameArg, String roleArg, int imgResID){
+    public Companion(String nameArg, Pair<String, String> roleArg, int imgResID){
         name = nameArg;
         role = roleArg;
         resourceID = imgResID;
@@ -28,24 +28,28 @@ public class Companion extends GeminiAPI {
 
     public String getName(){ return name; }
     private String name;
-    public String getRole(){ return role; }
-    private String role;
+
+    public String getRoleAdj(){ return role.first; } // gets the role adjective
+    public String getRoleDesc(){ return role.second; } // gets the role description
+    private Pair<String, String> role;
 
     public int getResID() { return resourceID; }
 
     private int resourceID = R.drawable.ic_launcher_foreground;
 
-    public int getColorCode() { return colorCodes.first; }
-    public int getAltColorCode() { return colorCodes.second; }
+    public int getColorCode(){ return colorCodes[0]; }
+    public int getAltColorCode(){ return colorCodes[1]; }
 
-    protected Pair<Integer, Integer> colorCodes = new Pair<>(0xFFfffef0, 0xFFe9f2cb);
+    public int getBtnColorCode(){ return colorCodes[2]; }
+
+    protected int[] colorCodes = { 0xFFfffef0, 0xFFffd86b, 0xFFfff200 };
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     // public Future<Script.ScriptContent> query(String inputStr) {
     public Script.ScriptContent getAdvice(String inputStr) throws InterruptedException {
         String content = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String prompt = "\nYour role is: " + getRole() + "In one sentence, provide a response to the users latest thought:" + inputStr;
+            String prompt = "\nYour role is: " + getRoleDesc() + "In one sentence, provide a response to the users latest thought:" + inputStr;
             content = BuildersKt.runBlocking(GlobalScope.INSTANCE.getCoroutineContext(),
                 (scope, continuation) -> promptToTxt(prompt, continuation)
             );

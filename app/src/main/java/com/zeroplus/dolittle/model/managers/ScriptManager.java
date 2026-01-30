@@ -10,13 +10,12 @@ import androidx.annotation.RequiresApi;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.zeroplus.dolittle.model.Avatar;
 import com.zeroplus.dolittle.model.Script;
+import com.zeroplus.dolittle.model.Speakers;
 
 public class ScriptManager {
 
@@ -40,7 +39,7 @@ public class ScriptManager {
     @SuppressLint("NewApi")
     public void loadScripts(String filePath) {
         if(filePath.isEmpty()) { // test
-            scripts.put(new Script("Hello how are you?"), new Avatar("Avatar 1"));
+            scripts.put(new Script("Hello how are you?"), new Speakers.User("User 1"));
             // scripts.put(new Script("Im Good, thanks"), new Avatar("Avatar 2"));
             // scripts.put(new Script("Lovely weather today"), new Avatar("Avatar 3"));
             // scripts.put(new Script("I suppose so"), new Avatar("Avatar 4"));
@@ -66,7 +65,7 @@ public class ScriptManager {
     public void saveScripts(String filePath) {
         File scriptFile = new File(filePath);
         try (FileWriter writer = new FileWriter(scriptFile, true)) { // true for append mode
-            for (Map.Entry<Script, Avatar> entry : scripts.entrySet()) {
+            for (Map.Entry<Script, Speakers.Speaker> entry : scripts.entrySet()) {
                 writer.write("Avatar: " + entry.getValue().getName() + "\n");
                 for (Script.ScriptContent c : entry.getKey().getScriptContents()) {
                     writer.write(c.getTimestamp() + ":" + c.getContent() + "\n");
@@ -77,12 +76,12 @@ public class ScriptManager {
         }
     }
 
-    public void addScript(Script script, Avatar avatar){ scripts.put(script, avatar); }
+    public void addScript(Script script, Speakers.Speaker speaker){ scripts.put(script, speaker); }
 
     // Callback interface for TimedEvent
     public interface Callback { void execute(); }
 
-    public Map<Script, Avatar> scripts = new LinkedHashMap<>();
+    public Map<Script, Speakers.Speaker> scripts = new LinkedHashMap<>();
     public static class TimedEvent extends CountDownTimer {
         private Callback tickCallback;
         private Callback finishCallback;

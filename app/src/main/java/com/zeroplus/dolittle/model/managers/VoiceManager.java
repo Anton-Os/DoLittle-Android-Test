@@ -1,40 +1,78 @@
 package com.zeroplus.dolittle.model.managers;
 
-import android.content.Context;
-import android.content.Intent;
-import android.media.MediaRecorder;
-import android.os.Build;
-import android.os.Bundle;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
-import android.util.Log; // Recommended for logging in Android
-
-import com.google.cloud.speech.v1.SpeechClient;
-import com.google.cloud.speech.v1.SpeechSettings;
-import com.zeroplus.dolittle.MainActivity; // Assuming MainActivity.scriptManager is static
-import com.zeroplus.dolittle.model.Avatar;
-import com.zeroplus.dolittle.model.Script;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.RequiresApi;
+
+import android.content.Context;
+import android.content.Intent;
+import android.media.MediaRecorder;
+import android.os.Build;
+import android.os.Bundle;
+import android.speech.SpeechRecognizer;
+import android.speech.RecognitionListener;
+import android.util.Log; // Recommended for logging in Android
+
+import com.google.cloud.speech.v1.SpeechClient;
+/* import com.google.cloud.speech.v2.AutoDetectDecodingConfig;
+import com.google.cloud.speech.v2.CreateRecognizerRequest;
+import com.google.cloud.speech.v2.OperationMetadata;
+import com.google.cloud.speech.v2.RecognitionConfig;
+import com.google.cloud.speech.v2.RecognizeRequest;
+import com.google.cloud.speech.v2.RecognizeResponse;
+import com.google.cloud.speech.v2.Recognizer;
+import com.google.cloud.speech.v2.SpeechClient;
+import com.google.cloud.speech.v2.SpeechRecognitionAlternative; */
+
+import com.zeroplus.dolittle.MainActivity; // Assuming MainActivity.scriptManager is static
+import com.zeroplus.dolittle.model.Speakers;
+import com.zeroplus.dolittle.model.Script;
+
 public class VoiceManager {
 
     public VoiceManager(Context context) {
-        // Media Recorder
-        mediaRecorder = new MediaRecorder();
+        mediaRecorder = new MediaRecorder(); // Media Recorder
         // Built-In Speech Recognizer
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
-        speechRecognitionListener = new SpeechRecognitionListenerImpl(); // Instantiate the inner class
+        SpeechListener speechListener = new SpeechListener(); // Instantiate the inner class
+        speechRecognizer.setRecognitionListener(speechListener);
+    }
+    public static void listen(Intent speechIntent){
+        isListening = true;
+        speechRecognizer.startListening(speechIntent);
+    }
+
+    public static void setupSpeech(String outputFile) {
+        // Media Recorder
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mediaRecorder.setOutputFile(outputFile);
+
+        try {
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+        } catch (IOException e) {
+            Log.e("VoiceManager", "Recording failed: $e");
+            throw new RuntimeException(e);
+        }
+
         // Google Speech-to-Text
         // try { speechClient = SpeechClient.create(); }
         // catch (IOException e) { throw new RuntimeException(e); }
     }
 
-    private class SpeechRecognitionListenerImpl implements RecognitionListener {
+    public static boolean getIsListening(){ return isListening; }
+
+    public void destroy() {
+        if (speechRecognizer != null) speechRecognizer.destroy();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
+    private static class SpeechListener implements RecognitionListener {
         @Override
         public void onReadyForSpeech(Bundle params) {
             Log.d("VoiceManager", "onReadyForSpeech() triggered");
@@ -66,15 +104,17 @@ public class VoiceManager {
         }
 
         @Override
-        public void onResults(Bundle results) {
-            Log.d("VoiceManager", "onResults() triggered");
-            if (results != null) analyzeSpeech(results);
+        public void onPartialResults(Bundle partialResults) {
+            Log.d("VoiceManager", "onPartialResults() triggered");
+            if(partialResults != null) analyzeSpeech(partialResults);
+            isListening = false; // finished listening // TODO: Trigger listening loop?
         }
 
         @Override
-        public void onPartialResults(Bundle partialResults) {
-            Log.d("VoiceManager", "onPartialResults() triggered");
-            if (partialResults != null) analyzeSpeech(partialResults);
+        public void onResults(Bundle results) {
+            Log.d("VoiceManager", "onResults() triggered");
+            if(results != null) analyzeSpeech(results);
+            isListening = false; // finished listening // TODO: Trigger listening loop?
         }
 
         @Override
@@ -83,65 +123,28 @@ public class VoiceManager {
         }
 
         public void analyzeSpeech(Bundle bundle) {
-            ArrayList<String> words = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            float[] scores = bundle.getFloatArray(SpeechRecognizer.CONFIDENCE_SCORES);
+            ArrayList<String> words = bundle.getStringArrayList(android.speech.SpeechRecognizer.RESULTS_RECOGNITION);
+            float[] scores = bundle.getFloatArray(android.speech.SpeechRecognizer.CONFIDENCE_SCORES);
 
             if (words != null) {
                 for (String word : words) {
-                    Map<Script, Avatar> tempMap = new HashMap<>();
+                    Map<Script, Speakers.Speaker> tempMap = new HashMap<>();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                        tempMap.put(new Script(word), new Avatar("Me"));
-
-                    if (MainActivity.scriptManager != null) {
-                        MainActivity.scriptManager.scripts.putAll(tempMap);
-                    } else {
-                        Log.e("VoiceManager", "scriptManager is null! Cannot add script.");
-                    }
+                        tempMap.put(new Script(word), new Speakers.User("Me"));
+                    MainActivity.scriptManager.scripts.putAll(tempMap);
                     Log.d("VoiceManager", "Results triggered with " + word);
                 }
             }
         }
     }
 
-    public static void setupSpeech(String outputFile) {
-        // Media Recorder
-
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setOutputFile(outputFile);
-
-        try {
-            mediaRecorder.prepare();
-            mediaRecorder.start();
-        } catch (IOException e) {
-            Log.e("VoiceManager", "Recording failed: $e");
-            throw new RuntimeException(e);
-        }
-
-        // Built-In Speech Recognizer
-        /* speechRecognizer.setRecognitionListener(speechRecognitionListener);
-
-        Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        // speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault()); // Uncomment if you need to set locale
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak Now");
-
-        speechRecognizer.startListening(speechRecognizerIntent); */
-
-        // Google Speech-to-Text
-
-        // TODO: Implementation Goes Here
-    }
-
-    public void destroy() {
-        if (speechRecognizer != null) speechRecognizer.destroy();
-    }
-
-    private static SpeechRecognizer speechRecognizer;
-    private static SpeechRecognitionListenerImpl speechRecognitionListener;
+    private static android.speech.SpeechRecognizer speechRecognizer;
 
     private static MediaRecorder mediaRecorder;
 
     private static SpeechClient speechClient; // From Google Speech-to-Text
+
+    private static boolean isListening = false;
+
+    // TODO: Insert callback here for listening
 }

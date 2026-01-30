@@ -3,8 +3,10 @@ package com.zeroplus.dolittle
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import androidx.activity.compose.BackHandler
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.zeroplus.dolittle.model.companions.Angel
+import com.zeroplus.dolittle.model.companions.Brain
 import com.zeroplus.dolittle.model.companions.Demon
 import com.zeroplus.dolittle.model.companions.Ghost
 import com.zeroplus.dolittle.model.managers.PermManager
@@ -100,7 +103,7 @@ class MainActivity : ComponentActivity() {
         var scriptManager : ScriptManager = ScriptManager()
         @RequiresApi(Build.VERSION_CODES.O)
         var companions : List<com.zeroplus.dolittle.model.Companion> = listOf(
-            Angel(), Ghost(), Demon()
+            Brain(), Ghost(), Angel(), Demon()
         )
     }
 }

@@ -13,21 +13,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
-import com.zeroplus.dolittle.model.Avatar
+import com.zeroplus.dolittle.model.Speakers
 import com.zeroplus.dolittle.model.Script
 
 @Composable
-fun ScriptContentPane(Avatar: Avatar, scriptContent: Script.ScriptContent){
+fun ScriptContentPane(speaker: Speakers.Speaker, scriptContent: Script.ScriptContent){
     Column(modifier = Modifier.padding(vertical = 20.dp), horizontalAlignment = Alignment.CenterHorizontally){
-        Text(Avatar.name)
+        Text(speaker.name)
 
         Card(
             modifier = Modifier.padding(horizontal = 10.dp).fillMaxWidth(0.9F),
             colors = CardColors(
-                containerColor = Color(0x33AAAAAA),
+                containerColor = Color(0xEFFFFFFF),
                 contentColor = Color(0xFF111111),
                 disabledContainerColor = Color(0x33DDDDDD),
-                disabledContentColor = Color(0xFFEEEEEE),
+                disabledContentColor = Color(0xAAEEEEEE),
             )
         ){
             Text(scriptContent.content, textAlign = TextAlign.Center)

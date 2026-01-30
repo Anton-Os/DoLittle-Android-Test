@@ -13,7 +13,7 @@ import com.zeroplus.dolittle.model.Script;
 public class Demon extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Demon() {
-        super("Demon", "Criticizes you and understands your worst vices", R.drawable.devil);
-        colorCodes = new Pair<>(0xFFf0d5d3, 0xFFf2cbce);
+        super("Demon", new Pair<>("Heckle", "Criticizes you and plays devils advocate"), R.drawable.devil);
+        colorCodes = new int[]{ 0xFFf0d5d3, 0xFFf06277, 0xFFff2600 };
     }
 }

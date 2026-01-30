@@ -58,7 +58,7 @@ public class PermManager {
             }
         }
 
-        public static final String BACKGROUND_PROCESSING = "trulli.permission.ACCESS_BACKGROUND_PROCESSING";
+        public static final String BACKGROUND_PROCESSING = "dolittle.permission.ACCESS_BACKGROUND_PROCESSING";
         @RequiresApi(Build.VERSION_CODES.Q)
         public static final String BACKGROUND_LOCATION = Manifest.permission.ACCESS_BACKGROUND_LOCATION;
 
