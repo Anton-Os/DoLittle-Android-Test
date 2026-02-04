@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
 
@@ -11,7 +12,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.zeroplus.dolittle.model.Script;
@@ -19,31 +23,13 @@ import com.zeroplus.dolittle.model.Speakers;
 
 public class ScriptManager {
 
-    public ScriptManager() {
+    /* public ScriptManager() {
         loadScripts(""); // test
-
-        // Set up the timed event callbacks
-        timedEvent.setOnTick(new Callback() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void execute() { /* scripts.put(new Script("What should I do today?"), new Avatar("Me")); */ }
-        });
-        timedEvent.setOnFinish(new Callback() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void execute() { /* scripts.put(new Script("How should I end my day?"), new Avatar("Me")); */ }
-        });
-        timedEvent.start();
-    }
+    } */
 
     @SuppressLint("NewApi")
     public void loadScripts(String filePath) {
-        if(filePath.isEmpty()) { // test
-            scripts.put(new Script("Hello how are you?"), new Speakers.User("User 1"));
-            // scripts.put(new Script("Im Good, thanks"), new Avatar("Avatar 2"));
-            // scripts.put(new Script("Lovely weather today"), new Avatar("Avatar 3"));
-            // scripts.put(new Script("I suppose so"), new Avatar("Avatar 4"));
-        } else {
+        if(!filePath.isEmpty()) {
             StringBuilder strBuilder = new StringBuilder();
 
             File scriptFile = new File(filePath);
@@ -65,46 +51,22 @@ public class ScriptManager {
     public void saveScripts(String filePath) {
         File scriptFile = new File(filePath);
         try (FileWriter writer = new FileWriter(scriptFile, true)) { // true for append mode
-            for (Map.Entry<Script, Speakers.Speaker> entry : scripts.entrySet()) {
-                writer.write("Avatar: " + entry.getValue().getName() + "\n");
-                for (Script.ScriptContent c : entry.getKey().getScriptContents()) {
+            for (var entry : scripts) {
+                writer.write("Avatar: " + entry.second.getName() + "\n");
+                for (Script.ScriptContent c : entry.first.getScriptContents())
                     writer.write(c.getTimestamp() + ":" + c.getContent() + "\n");
-                }
             }
         } catch (IOException e) {
             Log.e("ScriptManager", "Error saving scripts: " + e.getMessage());
         }
     }
 
-    public void addScript(Script script, Speakers.Speaker speaker){ scripts.put(script, speaker); }
+    public void addScript(Script script, Speakers.Speaker speaker){ scripts.add(Pair.create(script, speaker)); }
 
     // Callback interface for TimedEvent
     public interface Callback { void execute(); }
 
-    public Map<Script, Speakers.Speaker> scripts = new LinkedHashMap<>();
-    public static class TimedEvent extends CountDownTimer {
-        private Callback tickCallback;
-        private Callback finishCallback;
-
-        public TimedEvent(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-            Log.i("TEST", "Tick triggered");
-            if (this.tickCallback != null) { this.tickCallback.execute(); }
-        }
-
-        @Override
-        public void onFinish() {
-            if (this.finishCallback != null) this.finishCallback.execute();
-        }
-
-        public void setOnTick(Callback callback) { this.tickCallback = callback; }
-
-        public void setOnFinish(Callback callback) { this.finishCallback = callback; }
-    }
-
-    public static TimedEvent timedEvent = new TimedEvent(10000, 1000);
+    @SuppressLint("NewApi")
+    public List<Pair<Script, Speakers.Speaker>> scripts = new ArrayList<>(); // test with 1 element
+    // public List<Pair<Script, Speakers.Speaker>> scripts = new ArrayList<>(Arrays.asList(Pair.create(new Script("Hello how are you?"), new Speakers.User("User")))); // test with 1 element
 }

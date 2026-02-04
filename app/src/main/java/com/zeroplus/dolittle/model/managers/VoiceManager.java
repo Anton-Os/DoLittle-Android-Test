@@ -7,6 +7,7 @@ import java.util.Map;
 
 import androidx.annotation.RequiresApi;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRecorder;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.speech.SpeechRecognizer;
 import android.speech.RecognitionListener;
 import android.util.Log; // Recommended for logging in Android
+import android.util.Pair;
 
 import com.google.cloud.speech.v1.SpeechClient;
 /* import com.google.cloud.speech.v2.AutoDetectDecodingConfig;
@@ -40,9 +42,11 @@ public class VoiceManager {
         SpeechListener speechListener = new SpeechListener(); // Instantiate the inner class
         speechRecognizer.setRecognitionListener(speechListener);
     }
-    public static void listen(Intent speechIntent){
-        isListening = true;
+    public static void listen(Intent speechIntent, ListenerCallback callback){
+        savedIntent = speechIntent;
         speechRecognizer.startListening(speechIntent);
+        SpeechListener.listenerCallback = callback;
+        changeListenState(true);
     }
 
     public static void setupSpeech(String outputFile) {
@@ -73,6 +77,7 @@ public class VoiceManager {
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
     private static class SpeechListener implements RecognitionListener {
+
         @Override
         public void onReadyForSpeech(Bundle params) {
             Log.d("VoiceManager", "onReadyForSpeech() triggered");
@@ -107,14 +112,14 @@ public class VoiceManager {
         public void onPartialResults(Bundle partialResults) {
             Log.d("VoiceManager", "onPartialResults() triggered");
             if(partialResults != null) analyzeSpeech(partialResults);
-            isListening = false; // finished listening // TODO: Trigger listening loop?
+            changeListenState(false);
         }
 
         @Override
         public void onResults(Bundle results) {
             Log.d("VoiceManager", "onResults() triggered");
             if(results != null) analyzeSpeech(results);
-            isListening = false; // finished listening // TODO: Trigger listening loop?
+            changeListenState(false);
         }
 
         @Override
@@ -122,23 +127,30 @@ public class VoiceManager {
             Log.d("VoiceManager", "onEvent() triggered, eventType: " + eventType);
         }
 
+        @SuppressLint("NewApi")
         public void analyzeSpeech(Bundle bundle) {
             ArrayList<String> words = bundle.getStringArrayList(android.speech.SpeechRecognizer.RESULTS_RECOGNITION);
             float[] scores = bundle.getFloatArray(android.speech.SpeechRecognizer.CONFIDENCE_SCORES);
 
-            if (words != null) {
+            if (words != null)
                 for (String word : words) {
-                    Map<Script, Speakers.Speaker> tempMap = new HashMap<>();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                        tempMap.put(new Script(word), new Speakers.User("Me"));
-                    MainActivity.scriptManager.scripts.putAll(tempMap);
-                    Log.d("VoiceManager", "Results triggered with " + word);
+                    MainActivity.scriptManager.scripts.add(Pair.create(new Script(word), new Speakers.User("User"))); // TODO: Determine speaker
                 }
-            }
         }
+
+        private static ListenerCallback listenerCallback;
+    }
+
+    private static void changeListenState(boolean isListeningArg){
+        isListening = isListeningArg;
+        SpeechListener.listenerCallback.changeListenState(isListening);
+
+        if(!isListening && isPersistent) listen(savedIntent, SpeechListener.listenerCallback); // launch listen again persistently
     }
 
     private static android.speech.SpeechRecognizer speechRecognizer;
+
+    private static Intent savedIntent;
 
     private static MediaRecorder mediaRecorder;
 
@@ -146,5 +158,10 @@ public class VoiceManager {
 
     private static boolean isListening = false;
 
-    // TODO: Insert callback here for listening
+    public static boolean isPersistent = true;
+
+    public interface ListenerCallback {
+        void changeListenState(Boolean isListen);
+    }
+
 }
