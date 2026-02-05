@@ -13,6 +13,6 @@ public class Ghost extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Ghost() {
         super("Ghost", new Pair<>("Remind", "Reminds you of your past and habits"), R.drawable.ghost);
-        colorCodes = new int[]{ 0xFFdcdfe3, 0xFFafafaf, 0xFFeeeeee };
+        colorCodes = new int[]{ 0xFFdcefe3, 0xFFafcfaf, 0xFFeeffee, 0xFF111c11 };
     }
 }

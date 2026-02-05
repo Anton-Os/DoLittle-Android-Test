@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import kotlinx.coroutines.BuildersKt;
 import kotlinx.coroutines.GlobalScope;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.util.Pair;
 
@@ -37,12 +36,14 @@ public class Companion extends GeminiAPI {
 
     private int resourceID = R.drawable.ic_launcher_foreground;
 
-    public int getColorCode(){ return colorCodes[0]; }
+    public int getLitColorCode(){ return colorCodes[0]; }
     public int getAltColorCode(){ return colorCodes[1]; }
 
     public int getBtnColorCode(){ return colorCodes[2]; }
 
-    protected int[] colorCodes = { 0xFFfffef0, 0xFFffd86b, 0xFFfff200 };
+    public int getDrkColorCode(){ return colorCodes[3]; }
+
+    protected int[] colorCodes = { 0xFFfffef0, 0xFFffd86b, 0xFFfff200, 0xFF111111 };
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     // public Future<Script.ScriptContent> query(String inputStr) {

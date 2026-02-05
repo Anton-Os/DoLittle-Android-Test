@@ -40,13 +40,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.graphics.shapes.RoundedPolygon
+import androidx.graphics.shapes.toPath
 
 import com.zeroplus.dolittle.MainActivity
 import com.zeroplus.dolittle.model.Companion
@@ -61,6 +64,7 @@ import com.zeroplus.dolittle.ui.widgets.ContentPopup
 import com.zeroplus.dolittle.ui.widgets.DatePopup
 import com.zeroplus.dolittle.ui.widgets.ScriptContentPane
 import com.zeroplus.dolittle.ui.widgets.Welcome_PopupContent
+import java.nio.file.Files.size
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
@@ -106,7 +110,7 @@ fun HomeView() {
             ) { insets ->
                  Column(Modifier.padding(insets).fillMaxSize()) {
                     // Box(Modifier.weight(if(modeIdx.value != 0) 0.775F else 1F).fillMaxSize().background(LightGray)) {
-                     Box(Modifier.weight(1F).fillMaxSize().background(Color(getCompanion().colorCode))) {
+                     Box(Modifier.weight(1F).fillMaxSize().background(Color(getCompanion().litColorCode))) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Box(Modifier.weight(0.115F).fillMaxWidth().background(Color(getCompanion().altColorCode).copy(alpha = 0.5F))) {
                                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -158,6 +162,28 @@ fun HomeView() {
                                             color = if(modeIdx.value < 2) OffGrey else OffWhite,
                                             textAlign = TextAlign.Center
                                         )
+                                    }
+                                }
+
+                                Box(Modifier.align(Alignment.BottomCenter)){
+                                    Row(Modifier.fillMaxWidth(0.75F)){
+                                        for(b in 0..<MainActivity.companions.size)
+                                            if(b == modeIdx.value) Box(Modifier
+                                                .drawWithCache {
+                                                    val roundedPolygon = RoundedPolygon(
+                                                        numVertices = 100,
+                                                        radius = size.minDimension / 2,
+                                                        centerX = (size.width / 4) * 3,
+                                                        centerY = (size.height / 4) * 3
+                                                    )
+                                                    val roundedPolygonPath = roundedPolygon.toPath().asComposePath()
+                                                    onDrawBehind {
+                                                        drawPath(roundedPolygonPath, color = Color(getCompanion().btnColorCode))
+                                                    }
+                                                }
+                                                .fillMaxSize(0.05F)
+                                            )
+                                            else Spacer(Modifier.weight(1F))
                                     }
                                 }
                             }

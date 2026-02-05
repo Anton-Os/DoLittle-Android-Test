@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 
 import com.zeroplus.dolittle.model.Speakers
 import com.zeroplus.dolittle.model.Script
+import com.zeroplus.dolittle.ui.theme.OffGrey
+import com.zeroplus.dolittle.ui.theme.OffWhite
 
 @Composable
 fun ScriptContentPane(speaker: Speakers.Speaker, scriptContent: Script.ScriptContent){
@@ -24,10 +26,10 @@ fun ScriptContentPane(speaker: Speakers.Speaker, scriptContent: Script.ScriptCon
         Card(
             modifier = Modifier.padding(horizontal = 10.dp).fillMaxWidth(0.9F),
             colors = CardColors(
-                containerColor = Color(0xEFFFFFFF),
-                contentColor = Color(0xFF111111),
-                disabledContainerColor = Color(0x33DDDDDD),
-                disabledContentColor = Color(0xAAEEEEEE),
+                containerColor = OffWhite,
+                contentColor = OffGrey,
+                disabledContainerColor = OffWhite.copy(alpha = 0.5F),
+                disabledContentColor = OffGrey.copy(alpha = 0.5F)
             )
         ){
             Text(scriptContent.content, textAlign = TextAlign.Center)

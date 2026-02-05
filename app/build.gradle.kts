@@ -76,6 +76,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.graphics:graphics-shapes:1.0.1")
     implementation ("com.github.massoudss:waveformSeekBar:5.0.2")
     implementation ("com.github.lincollincol:amplituda:2.2.2")
     // implementation( "com.google.auth:google-auth-library-oauth2-http:0.26.0")
