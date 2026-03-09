@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "619188622364",
+    "project_id": "dolittle-7192c",
+    "storage_bucket": "dolittle-7192c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619188622364:android:4038a3b0158aa36bcd3bd9",
+        "android_client_info": {
+          "package_name": "com.zeroplus.dolittle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgqngwDrzZ6YfeNkDUHbiVTt3JYlnb9G0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

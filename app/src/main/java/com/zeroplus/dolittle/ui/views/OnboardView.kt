@@ -33,19 +33,21 @@ import com.zeroplus.dolittle.ui.theme.DoLittleTheme
 @Preview
 @Composable
 fun OnboardView(){
+    val isBackgroundGranted = PermManager.granted(PermManager.Perm.BACKGROUND_PERMS)
+    val isMicrophoneGranted = PermManager.granted(PermManager.Perm.RECORD_AUDIO)
+    val isStorageGranted = PermManager.granted(PermManager.Perm.READ_STORAGE)
+    val isNotificationGranted = PermManager.granted(PermManager.Perm.POST_NOTIFICATIONS)
+
     LaunchedEffect(key1 = Unit, block = {
-        if(PermManager.granted(PermManager.Perm.BACKGROUND_PERMS)
-            && PermManager.granted(PermManager.Perm.RECORD_AUDIO)
-            && PermManager.granted(PermManager.Perm.READ_STORAGE)
-            && PermManager.granted(PermManager.Perm.POST_NOTIFICATIONS)
-        ) MainActivity.navController?.navigate("home") // No need to reaccept permissions
+        if(isBackgroundGranted && isMicrophoneGranted && isStorageGranted && isNotificationGranted)
+            MainActivity.navController?.navigate("home") // No need to reaccept permissions
     })
 
     var acceptedPerms : Map<Pair<String, Array<String>>, MutableState<Boolean>> = mapOf(
-        Pair("Privacy", PermManager.Perm.BACKGROUND_PERMS) to remember { mutableStateOf(false) },
-        Pair("Microphone", arrayOf(PermManager.Perm.RECORD_AUDIO)) to remember { mutableStateOf(false) },
-        Pair("Storage", arrayOf(PermManager.Perm.READ_STORAGE)) to remember { mutableStateOf(false) },
-        Pair("Notifications", arrayOf(PermManager.Perm.POST_NOTIFICATIONS)) to remember { mutableStateOf(false) }
+        Pair("Privacy", PermManager.Perm.BACKGROUND_PERMS) to remember { mutableStateOf(isBackgroundGranted) },
+        Pair("Microphone", arrayOf(PermManager.Perm.RECORD_AUDIO)) to remember { mutableStateOf(isMicrophoneGranted) },
+        Pair("Storage", arrayOf(PermManager.Perm.READ_STORAGE)) to remember { mutableStateOf(isStorageGranted) },
+        Pair("Notifications", arrayOf(PermManager.Perm.POST_NOTIFICATIONS)) to remember { mutableStateOf(isNotificationGranted) }
     )
 
     DoLittleTheme {

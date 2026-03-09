@@ -13,7 +13,7 @@ import com.zeroplus.dolittle.model.Script;
 public class Angel extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Angel() {
-        super("Angel", new Pair<>("Inspire", "Offers encouragement and motivation"), R.drawable.angel);
+        super("Your Moral Compass", new Pair<>("Inspire", "Offers encouragement and motivation"), R.drawable.angel);
         colorCodes = new int[]{ 0xFFd3eff0, 0xFF6783f5, 0xFF00c8ff, 0xFF222244 };
     }
 }

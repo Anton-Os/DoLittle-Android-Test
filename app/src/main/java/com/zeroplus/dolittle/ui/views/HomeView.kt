@@ -108,9 +108,9 @@ fun HomeView() {
                         ) { Icon(Icons.Sharp.Add, "Floating action button.") }
                 } */
             ) { insets ->
-                 Column(Modifier.padding(insets).fillMaxSize()) {
+                Column(Modifier.padding(insets).fillMaxSize()) {
                     // Box(Modifier.weight(if(modeIdx.value != 0) 0.775F else 1F).fillMaxSize().background(LightGray)) {
-                     Box(Modifier.weight(1F).fillMaxSize().background(Color(getCompanion().litColorCode))) {
+                    Box(Modifier.weight(1F).fillMaxSize().background(Color(getCompanion().litColorCode))) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Box(Modifier.weight(0.115F).fillMaxWidth().background(Color(getCompanion().altColorCode).copy(alpha = 0.5F))) {
                                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -142,11 +142,11 @@ fun HomeView() {
                                             Speakers.Speaker(s.second.name),
                                             scriptContent = Script.ScriptContent(s.first.scriptContents[0].content)
                                         )
-                                        /* if(s.isNotEmpty())
-                                            ScriptContentPane(
-                                                Speakers.Speaker(s.toList()[0].second.name),
-                                                scriptContent = Script.ScriptContent(s.toList()[0].first.scriptContents[0].content)
-                                            ) */
+                                    /* if(s.isNotEmpty())
+                                        ScriptContentPane(
+                                            Speakers.Speaker(s.toList()[0].second.name),
+                                            scriptContent = Script.ScriptContent(s.toList()[0].first.scriptContents[0].content)
+                                        ) */
                                 }
 
                                 Box(Modifier.align(Alignment.BottomCenter)){
@@ -191,32 +191,32 @@ fun HomeView() {
                     }
 
                     Box(Modifier.weight(0.1F).fillMaxSize().background(Color(getCompanion().altColorCode)).padding(horizontal = 20.dp)) {
-                         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-                             // Button(onClick = { }) { Image(imageVector = Icons.Filled.KeyboardArrowUp) } // Menu Option
-                             Spacer(Modifier.weight(1.0F))
-                             Row(Modifier.weight(5.0F)) { // horizontalAlignment = Alignment.CenterHorizontally) {
-                                 for(b in 0..<MainActivity.companions.size)
-                                     Button(
-                                         onClick = { modeIdx.value = b },
-                                         Modifier.weight(1.0F).padding(horizontal = 5.dp),
-                                         border = BorderStroke(
-                                             width = if(modeIdx.value != b) 1.dp else 1.5.dp,
-                                             color = MaterialTheme.colorScheme.secondary.copy(alpha = if(modeIdx.value != b) 0.25F else 1.0F)
-                                         ),
-                                         colors = ButtonColors(
-                                             containerColor = if(modeIdx.value != b) Color.Transparent else Color(MainActivity.companions[b].btnColorCode),
-                                             contentColor = if(modeIdx.value != b) OffWhite else MaterialTheme.colorScheme.secondary,
-                                             disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5F),
-                                             disabledContentColor = OffWhite.copy(alpha = 0.5F)
-                                         )
-                                     ){
-                                         Image(painterResource(MainActivity.companions[b].resID), "Companion Image")
-                                     } // Menu Option
-                             }
-                             Spacer(Modifier.weight(1.0F))
-                         }
-                     }
-                 }
+                        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                            // Button(onClick = { }) { Image(imageVector = Icons.Filled.KeyboardArrowUp) } // Menu Option
+                            Spacer(Modifier.weight(1.0F))
+                            Row(Modifier.weight(5.0F)) { // horizontalAlignment = Alignment.CenterHorizontally) {
+                                for(b in 0..<MainActivity.companions.size)
+                                    Button(
+                                        onClick = { modeIdx.value = b },
+                                        Modifier.weight(1.0F).padding(horizontal = 5.dp),
+                                        border = BorderStroke(
+                                            width = if(modeIdx.value != b) 1.dp else 1.5.dp,
+                                            color = MaterialTheme.colorScheme.secondary.copy(alpha = if(modeIdx.value != b) 0.25F else 1.0F)
+                                        ),
+                                        colors = ButtonColors(
+                                            containerColor = if(modeIdx.value != b) Color.Transparent else Color(MainActivity.companions[b].btnColorCode),
+                                            contentColor = if(modeIdx.value != b) OffWhite else MaterialTheme.colorScheme.secondary,
+                                            disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5F),
+                                            disabledContentColor = OffWhite.copy(alpha = 0.5F)
+                                        )
+                                    ){
+                                        Image(painterResource(MainActivity.companions[b].resID), "Companion Image")
+                                    } // Menu Option
+                            }
+                            Spacer(Modifier.weight(1.0F))
+                        }
+                    }
+                }
             }
         }
 
