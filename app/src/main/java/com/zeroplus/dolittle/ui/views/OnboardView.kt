@@ -44,7 +44,7 @@ fun OnboardView(){
     })
 
     var acceptedPerms : Map<Pair<String, Array<String>>, MutableState<Boolean>> = mapOf(
-        Pair("Privacy", PermManager.Perm.BACKGROUND_PERMS) to remember { mutableStateOf(isBackgroundGranted) },
+        Pair("Background", PermManager.Perm.BACKGROUND_PERMS) to remember { mutableStateOf(isBackgroundGranted) },
         Pair("Microphone", arrayOf(PermManager.Perm.RECORD_AUDIO)) to remember { mutableStateOf(isMicrophoneGranted) },
         Pair("Storage", arrayOf(PermManager.Perm.READ_STORAGE)) to remember { mutableStateOf(isStorageGranted) },
         Pair("Notifications", arrayOf(PermManager.Perm.POST_NOTIFICATIONS)) to remember { mutableStateOf(isNotificationGranted) }

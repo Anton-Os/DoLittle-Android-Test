@@ -63,4 +63,6 @@ public class Companion extends GeminiAPI {
     }
     public ArrayList<Script.ScriptContent> getDialouges(){ return dialouges; }
     protected ArrayList<Script.ScriptContent> dialouges = new ArrayList<>();
+
+    private boolean isUnlocked = true; // generic companions unlocked by default and specialized one via micro-transactions
 }

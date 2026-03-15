@@ -104,6 +104,7 @@ public class VoiceManager {
         @Override
         public void onError(int error) {
             Log.e("VoiceManager", "onError() triggered with code: " + error);
+            changeListenState(false);
         }
 
         @Override

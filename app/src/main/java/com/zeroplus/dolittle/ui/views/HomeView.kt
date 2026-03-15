@@ -1,5 +1,6 @@
 package com.zeroplus.dolittle.ui.views
 
+import android.annotation.SuppressLint
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -60,12 +61,16 @@ import com.zeroplus.dolittle.ui.theme.DoLittleTheme
 import com.zeroplus.dolittle.ui.theme.OffWhite
 import com.zeroplus.dolittle.model.managers.VoiceManager
 import com.zeroplus.dolittle.ui.theme.OffGrey
+import androidx.compose.ui.graphics.drawscope.rotate
 import com.zeroplus.dolittle.ui.widgets.ContentPopup
 import com.zeroplus.dolittle.ui.widgets.DatePopup
 import com.zeroplus.dolittle.ui.widgets.ScriptContentPane
 import com.zeroplus.dolittle.ui.widgets.Welcome_PopupContent
 import java.nio.file.Files.size
 
+var savedModeIdx : Int = 0
+
+@SuppressLint("SuspiciousIndentation")
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
@@ -73,9 +78,10 @@ fun HomeView() {
     val isHelpShown = remember { mutableStateOf(true) } // TODO: Make this context dependent
     val isDateShown = remember { mutableStateOf(false) }
 
-    val modeIdx = remember { mutableStateOf(0) }
+    val modeIdx = remember { mutableStateOf(savedModeIdx) }
 
-    var scripts = remember { MainActivity.scriptManager.scripts.toMutableList() }
+    val isThinking = remember { mutableStateOf(false) }
+    val scripts = remember { mutableStateOf(MainActivity.scriptManager.scripts.toMutableList()) }
 
     fun record(callback: VoiceManager.ListenerCallback){
         VoiceManager.listen(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
@@ -87,6 +93,8 @@ fun HomeView() {
     }
 
     fun getCompanion() : Companion { return MainActivity.companions[modeIdx.value] }
+
+    // TODO: ADd Disposable Effect
 
     DoLittleTheme {
         ModalNavigationDrawer(
@@ -137,7 +145,7 @@ fun HomeView() {
                                     modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    for (s in scripts)
+                                    for (s in scripts.value)
                                         ScriptContentPane(
                                             Speakers.Speaker(s.second.name),
                                             scriptContent = Script.ScriptContent(s.first.scriptContents[0].content)
@@ -149,6 +157,7 @@ fun HomeView() {
                                         ) */
                                 }
 
+                                if(!isThinking.value)
                                 Box(Modifier.align(Alignment.BottomCenter)){
                                     Card(modifier = Modifier.padding(vertical = 10.dp).fillMaxHeight(0.1F).fillMaxWidth(0.9F),
                                         colors = CardColors(
@@ -157,31 +166,36 @@ fun HomeView() {
                                             disabledContainerColor = Color(getCompanion().btnColorCode).copy(alpha = 0.5F),
                                             disabledContentColor = Color(0xAAEEEEE),
                                         )){
-                                        Text("To " + getCompanion().roleAdj + ":\n" + getCompanion().roleDesc,
+
+                                        Text("\nHello World, I am " + getCompanion().name, // + "\n" + getCompanion().roleAdj + ":" + getCompanion().roleDesc,
                                             Modifier.fillMaxWidth().weight(0.7F),
                                             color = if(modeIdx.value < 2) OffGrey else OffWhite,
                                             textAlign = TextAlign.Center
                                         )
+                                        // else display loading animation
                                     }
                                 }
 
+                                if(!isThinking.value)
                                 Box(Modifier.align(Alignment.BottomCenter)){
                                     Row(Modifier.fillMaxWidth(0.75F)){
                                         for(b in 0..<MainActivity.companions.size)
-                                            if(b == modeIdx.value) Box(Modifier
+                                            if(b == modeIdx.value) Box(Modifier.fillMaxSize(0.05F)
                                                 .drawWithCache {
                                                     val roundedPolygon = RoundedPolygon(
-                                                        numVertices = 100,
-                                                        radius = size.minDimension / 2,
+                                                        numVertices = 3,
+                                                        radius = (size.minDimension / 2) + (size.minDimension / 5),
                                                         centerX = (size.width / 4) * 3,
                                                         centerY = (size.height / 4) * 3
                                                     )
                                                     val roundedPolygonPath = roundedPolygon.toPath().asComposePath()
+
                                                     onDrawBehind {
-                                                        drawPath(roundedPolygonPath, color = Color(getCompanion().btnColorCode))
+                                                        rotate(degrees = 90F){
+                                                            drawPath(roundedPolygonPath, color = Color(getCompanion().btnColorCode))
+                                                        }
                                                     }
                                                 }
-                                                .fillMaxSize(0.05F)
                                             )
                                             else Spacer(Modifier.weight(1F))
                                     }
@@ -197,7 +211,14 @@ fun HomeView() {
                             Row(Modifier.weight(5.0F)) { // horizontalAlignment = Alignment.CenterHorizontally) {
                                 for(b in 0..<MainActivity.companions.size)
                                     Button(
-                                        onClick = { modeIdx.value = b },
+                                        onClick = {
+                                            modeIdx.value = b
+                                            savedModeIdx = modeIdx.value
+                                            record { isListening ->
+                                                isThinking.value = isListening
+                                                scripts.value = MainActivity.scriptManager.scripts.toMutableList()
+                                            }
+                                        },
                                         Modifier.weight(1.0F).padding(horizontal = 5.dp),
                                         border = BorderStroke(
                                             width = if(modeIdx.value != b) 1.dp else 1.5.dp,
@@ -221,15 +242,18 @@ fun HomeView() {
         }
 
         if(isHelpShown.value)
-            ContentPopup({
-                Welcome_PopupContent({
+            ContentPopup(color = Color(getCompanion().litColorCode), {
+                Welcome_PopupContent(modeIdx, {
                     isHelpShown.value = !isHelpShown.value
                     val formatter: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault())
                     val timestamp : String = formatter.format( Date())
                     val outputFile : File = File(activity?.filesDir, "Audio" + timestamp + ".3gp") // ".mp3")
                     println("Using audio file " + outputFile.absolutePath + ", from dir " + activity?.filesDir)
 
-                    record { isListening -> scripts = MainActivity.scriptManager.scripts.toMutableList() }
+                    record { isListening ->
+                        isThinking.value = isListening
+                        scripts.value = MainActivity.scriptManager.scripts.toMutableList()
+                    }
                 })
             }) { isHelpShown.value = !isHelpShown.value }
 
