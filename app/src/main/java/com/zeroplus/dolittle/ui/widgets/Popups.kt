@@ -3,7 +3,6 @@ package com.zeroplus.dolittle.ui.widgets
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.content.MediaType.Companion.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,8 +15,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.sharp.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
@@ -32,14 +29,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asComposePath
-import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,11 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
-import androidx.graphics.shapes.RoundedPolygon
-import androidx.graphics.shapes.toPath
-import com.zeroplus.dolittle.MainActivity
 
-import com.zeroplus.dolittle.R
+import com.zeroplus.dolittle.MainActivity
 import com.zeroplus.dolittle.ui.theme.OffWhite
 
 class PopupPosProvider(private val x: Int = 0, private val y: Int = 0) : PopupPositionProvider {
@@ -153,7 +143,7 @@ fun Welcome_PopupContent(modeIdx: MutableState<Int>, dismissCallback: ()-> Unit 
 
         // Text("Never miss a thought\n\n", textAlign = TextAlign.Center)
         Row(Modifier.weight(0.5F)) {
-            IconButton(onClick = { if(modeIdx.value > 0) modeIdx.value-- }, Modifier.padding(bottom = 20.dp)){
+            IconButton(onClick = { if(modeIdx.value > 0) modeIdx.value-- else modeIdx.value = MainActivity.companions.size - 1 }, Modifier.padding(bottom = 20.dp)){
                 Icon(
                     Icons.Default.ArrowBack,
                     contentDescription = "Back Arrow",
@@ -171,7 +161,7 @@ fun Welcome_PopupContent(modeIdx: MutableState<Int>, dismissCallback: ()-> Unit 
             ) {
                 Text("Start Dialouge")
             }
-            IconButton(onClick = { if(modeIdx.value < MainActivity.companions.size - 1) modeIdx.value++ }, Modifier.padding(bottom = 20.dp)){
+            IconButton(onClick = { if(modeIdx.value < MainActivity.companions.size - 1) modeIdx.value++ else modeIdx.value = 0 }, Modifier.padding(bottom = 20.dp)){
                 Icon(
                     Icons.Default.ArrowForward,
                     contentDescription = "Forward Arrow",

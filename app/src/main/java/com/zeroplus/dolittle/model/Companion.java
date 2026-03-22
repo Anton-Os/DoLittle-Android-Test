@@ -9,6 +9,7 @@ import android.os.Build;
 import android.util.Pair;
 
 import androidx.annotation.RequiresApi;
+import androidx.compose.runtime.MutableState;
 
 import com.zeroplus.dolittle.R;
 import com.zeroplus.dolittle.model.managers.GeminiAPI;
@@ -43,23 +44,25 @@ public class Companion extends GeminiAPI {
 
     public int getDrkColorCode(){ return colorCodes[3]; }
 
+    // public void setDialouge(){}
+
     protected int[] colorCodes = { 0xFFfffef0, 0xFFffd86b, 0xFFfff200, 0xFF111111 };
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     // public Future<Script.ScriptContent> query(String inputStr) {
-    public Script.ScriptContent getAdvice(String inputStr) throws InterruptedException {
+    public void getAdvice(String inputStr, MutableState<String> dialouge) throws InterruptedException {
         String content = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String prompt = "\nYour role is: " + getRoleDesc() + "In one sentence, provide a response to the users latest thought:" + inputStr;
+            String prompt = "\nYour name is " + getName() + " and your role is to" + getRoleAdj() + ": " + getRoleDesc()
+            + "Respond to the user in one sentence based on their latest thought: " + inputStr;
             content = BuildersKt.runBlocking(GlobalScope.INSTANCE.getCoroutineContext(),
                 (scope, continuation) -> promptToTxt(prompt, continuation)
             );
             /* content = BuildersKt.launch(GlobalScope.INSTANCE, null, null,
                     (scope, continuation) -> promptToTxt(prompt, continuation);
             ); */
+            dialouge.setValue(content);
         }
-        dialouges.add(new Script.ScriptContent(content));
-        return dialouges.get(dialouges.size() - 1);
     }
     public ArrayList<Script.ScriptContent> getDialouges(){ return dialouges; }
     protected ArrayList<Script.ScriptContent> dialouges = new ArrayList<>();

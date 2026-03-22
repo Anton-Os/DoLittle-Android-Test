@@ -83,6 +83,7 @@ fun HomeView() {
     val isThinking = remember { mutableStateOf(false) }
     val scripts = remember { mutableStateOf(MainActivity.scriptManager.scripts.toMutableList()) }
 
+
     fun record(callback: VoiceManager.ListenerCallback){
         VoiceManager.listen(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(
@@ -93,6 +94,8 @@ fun HomeView() {
     }
 
     fun getCompanion() : Companion { return MainActivity.companions[modeIdx.value] }
+
+    val dialouge = remember { mutableStateOf("\nHello world, I am ${getCompanion().name}") }
 
     // TODO: ADd Disposable Effect
 
@@ -157,26 +160,7 @@ fun HomeView() {
                                         ) */
                                 }
 
-                                if(!isThinking.value)
-                                Box(Modifier.align(Alignment.BottomCenter)){
-                                    Card(modifier = Modifier.padding(vertical = 10.dp).fillMaxHeight(0.1F).fillMaxWidth(0.9F),
-                                        colors = CardColors(
-                                            containerColor = Color(getCompanion().btnColorCode),
-                                            contentColor = Color(0xFFEEEEE),
-                                            disabledContainerColor = Color(getCompanion().btnColorCode).copy(alpha = 0.5F),
-                                            disabledContentColor = Color(0xAAEEEEE),
-                                        )){
-
-                                        Text("\nHello World, I am " + getCompanion().name, // + "\n" + getCompanion().roleAdj + ":" + getCompanion().roleDesc,
-                                            Modifier.fillMaxWidth().weight(0.7F),
-                                            color = if(modeIdx.value < 2) OffGrey else OffWhite,
-                                            textAlign = TextAlign.Center
-                                        )
-                                        // else display loading animation
-                                    }
-                                }
-
-                                if(!isThinking.value)
+                                // if(!isThinking.value)
                                 Box(Modifier.align(Alignment.BottomCenter)){
                                     Row(Modifier.fillMaxWidth(0.75F)){
                                         for(b in 0..<MainActivity.companions.size)
@@ -200,6 +184,25 @@ fun HomeView() {
                                             else Spacer(Modifier.weight(1F))
                                     }
                                 }
+
+                                // if(!isThinking.value)
+                                Box(Modifier.align(Alignment.BottomCenter)){
+                                    Card(modifier = Modifier.padding(vertical = 10.dp).fillMaxHeight(0.135F).fillMaxWidth(0.9F),
+                                        colors = CardColors(
+                                            containerColor = Color(getCompanion().btnColorCode),
+                                            contentColor = Color(0xFFEEEEE),
+                                            disabledContainerColor = Color(getCompanion().btnColorCode).copy(alpha = 0.5F),
+                                            disabledContentColor = Color(0xAAEEEEE),
+                                        )){
+
+                                        Text(dialouge.value,
+                                            Modifier.fillMaxWidth().weight(0.7F),
+                                            color = if(modeIdx.value < 2) OffGrey else OffWhite,
+                                            textAlign = TextAlign.Center
+                                        )
+                                        // else display loading animation
+                                    }
+                                }
                             }
                         }
                     }
@@ -213,10 +216,12 @@ fun HomeView() {
                                     Button(
                                         onClick = {
                                             modeIdx.value = b
+                                            dialouge.value = "\nHello world, I am ${getCompanion().name}"
                                             savedModeIdx = modeIdx.value
                                             record { isListening ->
                                                 isThinking.value = isListening
                                                 scripts.value = MainActivity.scriptManager.scripts.toMutableList()
+                                                if(scripts.value.isNotEmpty()) getCompanion().getAdvice(scripts.value.last().first.scriptContents[0].content, dialouge) // Test Advice Logic
                                             }
                                         },
                                         Modifier.weight(1.0F).padding(horizontal = 5.dp),
@@ -253,6 +258,7 @@ fun HomeView() {
                     record { isListening ->
                         isThinking.value = isListening
                         scripts.value = MainActivity.scriptManager.scripts.toMutableList()
+                        if(scripts.value.isNotEmpty()) getCompanion().getAdvice(scripts.value.last().first.scriptContents[0].content, dialouge) // Test Advice Logic
                     }
                 })
             }) { isHelpShown.value = !isHelpShown.value }

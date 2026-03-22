@@ -18,7 +18,7 @@ open class GeminiAPI {
 
     fun getModel() : GenerativeModel {
         return GenerativeModel(
-            "gemini-2.0-flash-001",
+            "gemini-3-flash-preview",
             "AIzaSyDLMppK9X-aBVR91qWqQUemTcg80aZNhMU"
         )
     }
