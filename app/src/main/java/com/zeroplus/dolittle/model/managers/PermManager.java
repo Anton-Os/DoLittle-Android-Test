@@ -81,6 +81,10 @@ public class PermManager {
         public static final String READ_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
         public static final String WRITE_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
+        public static final String[] USE_ALARMS = new String[] {
+                Manifest.permission.SCHEDULE_EXACT_ALARM, Manifest.permission.USE_EXACT_ALARM
+        };
+
         public static final String POST_NOTIFICATIONS;
 
         static {

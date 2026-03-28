@@ -33,18 +33,20 @@ import com.zeroplus.dolittle.ui.theme.DoLittleTheme
 @Preview
 @Composable
 fun OnboardView(){
-    val isBackgroundGranted = PermManager.granted(PermManager.Perm.BACKGROUND_PERMS)
+    // val isBackgroundGranted = PermManager.granted(PermManager.Perm.BACKGROUND_PERMS)
+    val isAlarmGranted = PermManager.granted(PermManager.Perm.USE_ALARMS)
     val isMicrophoneGranted = PermManager.granted(PermManager.Perm.RECORD_AUDIO)
     val isStorageGranted = PermManager.granted(PermManager.Perm.READ_STORAGE)
     val isNotificationGranted = PermManager.granted(PermManager.Perm.POST_NOTIFICATIONS)
 
     LaunchedEffect(key1 = Unit, block = {
-        if(isBackgroundGranted && isMicrophoneGranted && isStorageGranted && isNotificationGranted)
+        if(isAlarmGranted && isMicrophoneGranted && isStorageGranted && isNotificationGranted)
             MainActivity.navController?.navigate("home") // No need to reaccept permissions
     })
 
     var acceptedPerms : Map<Pair<String, Array<String>>, MutableState<Boolean>> = mapOf(
-        Pair("Background", PermManager.Perm.BACKGROUND_PERMS) to remember { mutableStateOf(isBackgroundGranted) },
+        // Pair("Background", PermManager.Perm.BACKGROUND_PERMS) to remember { mutableStateOf(isBackgroundGranted) },
+        Pair("Alarms", PermManager.Perm.USE_ALARMS) to remember { mutableStateOf(isAlarmGranted) },
         Pair("Microphone", arrayOf(PermManager.Perm.RECORD_AUDIO)) to remember { mutableStateOf(isMicrophoneGranted) },
         Pair("Storage", arrayOf(PermManager.Perm.READ_STORAGE)) to remember { mutableStateOf(isStorageGranted) },
         Pair("Notifications", arrayOf(PermManager.Perm.POST_NOTIFICATIONS)) to remember { mutableStateOf(isNotificationGranted) }

@@ -95,7 +95,7 @@ fun HomeView() {
 
     fun getCompanion() : Companion { return MainActivity.companions[modeIdx.value] }
 
-    val dialouge = remember { mutableStateOf("\nHello world, I am ${getCompanion().name}") }
+    val dialouge = remember { mutableStateOf("") }
 
     // TODO: ADd Disposable Effect
 
@@ -157,10 +157,9 @@ fun HomeView() {
                                         ScriptContentPane(
                                             Speakers.Speaker(s.toList()[0].second.name),
                                             scriptContent = Script.ScriptContent(s.toList()[0].first.scriptContents[0].content)
-                                        ) */
-                                }
+                                        ) */}
 
-                                // if(!isThinking.value)
+                                if(dialouge.value.isNotEmpty())
                                 Box(Modifier.align(Alignment.BottomCenter)){
                                     Row(Modifier.fillMaxWidth(0.75F)){
                                         for(b in 0..<MainActivity.companions.size)
@@ -185,7 +184,7 @@ fun HomeView() {
                                     }
                                 }
 
-                                // if(!isThinking.value)
+                                if(dialouge.value.isNotEmpty())
                                 Box(Modifier.align(Alignment.BottomCenter)){
                                     Card(modifier = Modifier.padding(vertical = 10.dp).fillMaxHeight(0.135F).fillMaxWidth(0.9F),
                                         colors = CardColors(
