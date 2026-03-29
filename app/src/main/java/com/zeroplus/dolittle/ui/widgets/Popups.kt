@@ -47,6 +47,7 @@ import androidx.compose.ui.window.PopupProperties
 
 import com.zeroplus.dolittle.MainActivity
 import com.zeroplus.dolittle.ui.theme.OffWhite
+import java.time.LocalDate
 
 class PopupPosProvider(private val x: Int = 0, private val y: Int = 0) : PopupPositionProvider {
     override fun calculatePosition(
@@ -86,16 +87,19 @@ fun ContentPopup(color: Color = Color(0xFFfffdeb), content: @Composable() ()-> U
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePopup(dismissCallback: ()-> Unit = {}){
+fun DatePopup(localDate: MutableState<LocalDate>, dismissCallback: ()-> Unit = {}){
     val datePickerState = rememberDatePickerState()
-    // val confirmEnabled = remember { derivedStateOf { datePickerState.selectedDateMillis != null } }
 
     DatePickerDialog(
         onDismissRequest = dismissCallback,
         confirmButton = {
-            Button(onClick = { dismissCallback() }) {
+            Button(onClick = {
+                localDate.value = LocalDate.ofEpochDay(datePickerState.selectedDateMillis?.div((24 * 60 * 60 * 1000)) ?: 0)
+                dismissCallback()
+            }) {
                 Text("Select Date")
             }
         },

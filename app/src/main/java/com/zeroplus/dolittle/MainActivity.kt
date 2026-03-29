@@ -39,7 +39,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         voiceManager = VoiceManager(this)
-        // createNotificationChannel("com.dolittle.notification", "DoLittle is here!")
+
+        createNotificationChannel("com.dolittle.notification", "DoLittle is here!")
+        // TODO: Invoke Storage.loadScriptsState()
 
         setContent {
             navController = rememberNavController()
@@ -78,6 +80,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         // voiceManager.speechRecognizer.destroy()
+        // TODO: Invoke Storage.saveScriptsState()
+
         super.onDestroy()
     }
 

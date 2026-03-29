@@ -80,9 +80,9 @@ fun HomeView() {
 
     val modeIdx = remember { mutableStateOf(savedModeIdx) }
 
-    val isThinking = remember { mutableStateOf(false) }
+    val dialouge = remember { mutableStateOf("") }
     val scripts = remember { mutableStateOf(MainActivity.scriptManager.scripts.toMutableList()) }
-
+    val localDate = remember { mutableStateOf(LocalDate.now()) }
 
     fun record(callback: VoiceManager.ListenerCallback){
         VoiceManager.listen(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
@@ -94,8 +94,6 @@ fun HomeView() {
     }
 
     fun getCompanion() : Companion { return MainActivity.companions[modeIdx.value] }
-
-    val dialouge = remember { mutableStateOf("") }
 
     // TODO: ADd Disposable Effect
 
@@ -130,11 +128,11 @@ fun HomeView() {
                                         IconButton(modifier = Modifier.weight(0.75F), onClick = { isDateShown.value = !isDateShown.value }, enabled = true){
                                             Icon(Icons.Sharp.List, "List Dates")
                                         }
-                                        Text(LocalDate.now().monthValue.toString() + " /", Modifier.weight(1F), fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                                        Text(localDate.value.monthValue.toString() + " /", Modifier.weight(1F), fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                                         // Text("|", Modifier.weight(1F), fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                                        Text(LocalDate.now().dayOfMonth.toString() + " /", Modifier.weight(1F), fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                                        Text(localDate.value.dayOfMonth.toString() + " /", Modifier.weight(1F), fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                                         // Text("|", Modifier.weight(1F), fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                                        Text(LocalDate.now().year.toString(), Modifier.weight(1F), fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                                        Text(localDate.value.year.toString(), Modifier.weight(1F), fontSize = 20.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                                         IconButton(modifier = Modifier.weight(0.75F), onClick = { MainActivity.navController?.navigate("settings") }, enabled = true,) {
                                             Icon(Icons.Sharp.Settings, "Open Settings")
                                         }
@@ -218,7 +216,6 @@ fun HomeView() {
                                             dialouge.value = "\nHello world, I am ${getCompanion().name}"
                                             savedModeIdx = modeIdx.value
                                             record { isListening ->
-                                                isThinking.value = isListening
                                                 scripts.value = MainActivity.scriptManager.scripts.toMutableList()
                                                 if(scripts.value.isNotEmpty()) getCompanion().getAdvice(scripts.value.last().first.scriptContents[0].content, dialouge) // Test Advice Logic
                                             }
@@ -255,14 +252,13 @@ fun HomeView() {
                     println("Using audio file " + outputFile.absolutePath + ", from dir " + activity?.filesDir)
 
                     record { isListening ->
-                        isThinking.value = isListening
                         scripts.value = MainActivity.scriptManager.scripts.toMutableList()
                         if(scripts.value.isNotEmpty()) getCompanion().getAdvice(scripts.value.last().first.scriptContents[0].content, dialouge) // Test Advice Logic
                     }
                 })
             }) { isHelpShown.value = !isHelpShown.value }
 
-        if(isDateShown.value) DatePopup(){
+        if(isDateShown.value) DatePopup(localDate){
             isDateShown.value = !isDateShown.value
         }
     }

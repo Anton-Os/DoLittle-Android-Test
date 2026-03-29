@@ -78,6 +78,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation("androidx.room:room-runtime:2.8.4")
+    // ksp("androidx.room:room-compiler:2.8.4")
+    annotationProcessor("androidx.room:room-compiler:2.8.4")
+
     implementation(platform("com.google.firebase:firebase-bom:34.9.0"))
     implementation("com.google.firebase:firebase-analytics")
 

@@ -59,7 +59,10 @@ public class Companion {
         FutureKt.future(GlobalScope.INSTANCE, GlobalScope.INSTANCE.getCoroutineContext(), CoroutineStart.DEFAULT,
                 (scope, continuation) ->
                         GeminiAPI.INSTANCE.promptToTxt(prompt, continuation)
-        ).thenAccept(result -> { dialouge.setValue(result.toString()); }).exceptionally(e -> {
+        ).thenAccept(result -> {
+            dialouge.setValue(result.toString());
+
+        }).exceptionally(e -> {
             e.printStackTrace();
             return null;
         });

@@ -140,6 +140,7 @@ public class VoiceManager {
         private static ListenerCallback listenerCallback;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
     private static void changeListenState(boolean isListeningArg){
         isListening = isListeningArg;
         SpeechListener.listenerCallback.changeListenState(isListening);
