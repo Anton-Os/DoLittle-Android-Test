@@ -17,10 +17,11 @@ object GeminiAPI {
         return response.text
     }
 
-    private fun getTextModel() : GenerativeModel {
+    private fun getTextModel(instructions: String = "You are a virtual AI companion who's responses and tone should match your personality archetype") : GenerativeModel {
         return GenerativeModel(
             "gemini-3-flash-preview",
-            "AIzaSyDLMppK9X-aBVR91qWqQUemTcg80aZNhMU"
+            "AIzaSyDLMppK9X-aBVR91qWqQUemTcg80aZNhMU",
+            systemInstruction = Content("model", parts = listOf(TextPart(instructions)))
         )
     }
 }

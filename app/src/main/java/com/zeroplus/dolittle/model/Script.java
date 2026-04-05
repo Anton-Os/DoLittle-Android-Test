@@ -16,13 +16,7 @@ public class Script {
     }
     public static class ScriptContent {
         @RequiresApi(api = Build.VERSION_CODES.O)
-        public ScriptContent(String contentArg){
-            timestamp = LocalDate.now();
-            content = contentArg;
-        }
-
-        public LocalDate getTimestamp(){ return timestamp; }
-        LocalDate timestamp;
+        public ScriptContent(String contentArg){ content = contentArg; }
 
         public String getContent(){ return content; }
         private String content;

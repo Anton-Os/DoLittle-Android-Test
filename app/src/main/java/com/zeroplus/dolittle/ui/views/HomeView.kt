@@ -84,13 +84,14 @@ fun HomeView() {
     val scripts = remember { mutableStateOf(MainActivity.scriptManager.scripts.toMutableList()) }
     val localDate = remember { mutableStateOf(LocalDate.now()) }
 
-    fun record(callback: VoiceManager.ListenerCallback){
-        VoiceManager.listen(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-        }, callback)
+    fun record(callback: VoiceManager.ListenerCallback) = run {
+        if(!VoiceManager.getIsListening()) // protects from double firing
+            VoiceManager.listen(Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(
+                    RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+                )
+            }, callback)
     }
 
     fun getCompanion() : Companion { return MainActivity.companions[modeIdx.value] }

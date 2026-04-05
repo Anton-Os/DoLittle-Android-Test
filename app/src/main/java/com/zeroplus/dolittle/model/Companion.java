@@ -61,7 +61,6 @@ public class Companion {
                         GeminiAPI.INSTANCE.promptToTxt(prompt, continuation)
         ).thenAccept(result -> {
             dialouge.setValue(result.toString());
-
         }).exceptionally(e -> {
             e.printStackTrace();
             return null;
