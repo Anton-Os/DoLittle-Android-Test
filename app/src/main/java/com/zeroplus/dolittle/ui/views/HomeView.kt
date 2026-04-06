@@ -66,7 +66,6 @@ import com.zeroplus.dolittle.ui.widgets.ContentPopup
 import com.zeroplus.dolittle.ui.widgets.DatePopup
 import com.zeroplus.dolittle.ui.widgets.ScriptContentPane
 import com.zeroplus.dolittle.ui.widgets.Welcome_PopupContent
-import java.nio.file.Files.size
 
 var savedModeIdx : Int = 0
 
@@ -96,7 +95,7 @@ fun HomeView() {
 
     fun getCompanion() : Companion { return MainActivity.companions[modeIdx.value] }
 
-    // TODO: ADd Disposable Effect
+    // TODO: Add Disposable Effect
 
     DoLittleTheme {
         ModalNavigationDrawer(
@@ -147,16 +146,15 @@ fun HomeView() {
                                     modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    for (s in scripts.value)
+                                    for (s in scripts.value) {
                                         ScriptContentPane(
-                                            Speakers.Speaker(s.second.name),
-                                            scriptContent = Script.ScriptContent(s.first.scriptContents[0].content)
+                                            s.second,
+                                            scriptContent = s.first.scriptContents[0]
                                         )
-                                    /* if(s.isNotEmpty())
-                                        ScriptContentPane(
-                                            Speakers.Speaker(s.toList()[0].second.name),
-                                            scriptContent = Script.ScriptContent(s.toList()[0].first.scriptContents[0].content)
-                                        ) */}
+
+                                        // if(getCompanion().dialouges.get(s.first.scriptContents[0].content)) // TODO: Include Companion Response if Appropriate
+                                    }
+                                }
 
                                 if(dialouge.value.isNotEmpty())
                                 Box(Modifier.align(Alignment.BottomCenter)){
@@ -218,7 +216,7 @@ fun HomeView() {
                                             savedModeIdx = modeIdx.value
                                             record { isListening ->
                                                 scripts.value = MainActivity.scriptManager.scripts.toMutableList()
-                                                if(scripts.value.isNotEmpty()) getCompanion().getAdvice(scripts.value.last().first.scriptContents[0].content, dialouge) // Test Advice Logic
+                                                if(scripts.value.isNotEmpty()) getCompanion().getAdvice(scripts.value.last().first.scriptContents[0], dialouge) // Test Advice Logic
                                             }
                                         },
                                         Modifier.weight(1.0F).padding(horizontal = 5.dp),
@@ -254,7 +252,7 @@ fun HomeView() {
 
                     record { isListening ->
                         scripts.value = MainActivity.scriptManager.scripts.toMutableList()
-                        if(scripts.value.isNotEmpty()) getCompanion().getAdvice(scripts.value.last().first.scriptContents[0].content, dialouge) // Test Advice Logic
+                        if(scripts.value.isNotEmpty()) getCompanion().getAdvice(scripts.value.last().first.scriptContents[0], dialouge) // Test Advice Logic
                     }
                 })
             }) { isHelpShown.value = !isHelpShown.value }

@@ -14,6 +14,8 @@ public class Demon extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Demon() {
         super("Devil's Advocate", new Pair<>("Heckle", "Criticizes you and plays devils advocate"), R.drawable.devil);
+
         colorCodes = new int[]{ 0xFFf0d5d3, 0xFFf06277, 0xFFff2600, 0xFF442222 };
+        vettingStr = "Replace your punctuation with exclamation marks and write in all-caps when appropriate to appear more enraged";
     }
 }

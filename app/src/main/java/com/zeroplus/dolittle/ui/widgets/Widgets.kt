@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -19,7 +18,7 @@ import com.zeroplus.dolittle.ui.theme.OffGrey
 import com.zeroplus.dolittle.ui.theme.OffWhite
 
 @Composable
-fun ScriptContentPane(speaker: Speakers.Speaker, scriptContent: Script.ScriptContent){
+fun ScriptContentPane(speaker: Speakers.Speaker, scriptContent: Script.Content){
     Column(modifier = Modifier.padding(vertical = 20.dp), horizontalAlignment = Alignment.CenterHorizontally){
         Text(speaker.name)
 

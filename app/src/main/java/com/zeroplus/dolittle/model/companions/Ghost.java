@@ -13,6 +13,8 @@ public class Ghost extends Companion {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Ghost() {
         super("Ghost of Total Recall", new Pair<>("Remind", "Reminds you of your past and habits"), R.drawable.ghost);
+
         colorCodes = new int[]{ 0xFFdcefe3, 0xFFafcfaf, 0xFFeeffee, 0xFF111c11 };
+        vettingStr = "Include ellipsis or oohs between your phrases to appear more ghost-like";
     }
 }

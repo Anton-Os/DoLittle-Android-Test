@@ -6,10 +6,30 @@ import com.google.ai.client.generativeai.type.TextPart
 
 object GeminiAPI {
     suspend fun promptToTxt(prompt: String): String? {
+        if(prompt.isEmpty()) return null // error handling
+
         var response = getTextModel().generateContent(
             Content(
                 role = "user",
                 parts = listOf(TextPart(prompt))
+            )
+        )
+        println("Generated response from GeminiAPI is:\n ${response.text}")
+
+        return response.text
+    }
+
+    suspend fun promptsToTxt(prompts: List<String>): String? {
+        if(prompts.isEmpty()) return null // error handling
+        else if(prompts.size == 1) return promptToTxt(prompts.first())
+
+        var textParts : MutableList<TextPart> = mutableListOf()
+        for(p in prompts) textParts.add(TextPart(p))
+
+        var response = getTextModel().generateContent(
+            Content(
+                role = "user",
+                parts = textParts
             )
         )
         println("Generated response from GeminiAPI is:\n ${response.text}")
