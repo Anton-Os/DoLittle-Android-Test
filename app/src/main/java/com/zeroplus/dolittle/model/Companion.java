@@ -87,6 +87,7 @@ public class Companion {
             if(result != null) {
                 dialouge.setValue(result.toString());
                 dialougesMap.put(content, result.toString());
+                println(Log.INFO, "STATUS", "Dialouges map is " + dialougesMap.toString());
             }
         }).exceptionally(e -> {
             e.printStackTrace();

@@ -82,6 +82,9 @@ dependencies {
     // ksp("androidx.room:room-compiler:2.8.4")
     annotationProcessor("androidx.room:room-compiler:2.8.4")
 
+    // val ktor_version = "3.0.3" // or "2.3.12"
+    // implementation("io.ktor:ktor-client-core:$ktor_version")
+    // implementation("io.ktor:ktor-client-okhttp:$ktor_version")
     implementation(platform("com.google.firebase:firebase-bom:34.9.0"))
     implementation("com.google.firebase:firebase-analytics")
     // implementation("com.google.firebase:firebase-ai")

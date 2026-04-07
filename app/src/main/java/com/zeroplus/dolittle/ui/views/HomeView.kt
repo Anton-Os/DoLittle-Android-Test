@@ -8,6 +8,7 @@ import java.util.Date
 import java.util.Locale
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Build
 import android.speech.RecognizerIntent
 import androidx.annotation.RequiresApi
@@ -64,6 +65,7 @@ import com.zeroplus.dolittle.ui.theme.OffGrey
 import androidx.compose.ui.graphics.drawscope.rotate
 import com.zeroplus.dolittle.ui.widgets.ContentPopup
 import com.zeroplus.dolittle.ui.widgets.DatePopup
+import com.zeroplus.dolittle.ui.widgets.DialougeContentPane
 import com.zeroplus.dolittle.ui.widgets.ScriptContentPane
 import com.zeroplus.dolittle.ui.widgets.Welcome_PopupContent
 
@@ -140,7 +142,8 @@ fun HomeView() {
                                 }
                             }
 
-                            Box(Modifier.weight(1F).fillMaxWidth()) {
+                            if(scripts.value.isNotEmpty())
+                                Box(Modifier.weight(1F).fillMaxWidth()) {
                                 val scrollState = rememberScrollState()
                                 Column(
                                     modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
@@ -152,7 +155,9 @@ fun HomeView() {
                                             scriptContent = s.first.scriptContents[0]
                                         )
 
-                                        // if(getCompanion().dialouges.get(s.first.scriptContents[0].content)) // TODO: Include Companion Response if Appropriate
+                                        val dialougeResponse = getCompanion().dialouges.get(s.first.scriptContents[0])
+                                        if(dialougeResponse != null && dialougeResponse != dialouge.value)
+                                            DialougeContentPane(getCompanion(), dialougeResponse, if(modeIdx.value < 2) OffGrey else OffWhite)
                                     }
                                 }
 
@@ -183,21 +188,12 @@ fun HomeView() {
 
                                 if(dialouge.value.isNotEmpty())
                                 Box(Modifier.align(Alignment.BottomCenter)){
-                                    Card(modifier = Modifier.padding(vertical = 10.dp).fillMaxHeight(0.135F).fillMaxWidth(0.9F),
-                                        colors = CardColors(
-                                            containerColor = Color(getCompanion().btnColorCode),
-                                            contentColor = Color(0xFFEEEEE),
-                                            disabledContainerColor = Color(getCompanion().btnColorCode).copy(alpha = 0.5F),
-                                            disabledContentColor = Color(0xAAEEEEE),
-                                        )){
-
-                                        Text(dialouge.value,
-                                            Modifier.fillMaxWidth().weight(0.7F),
-                                            color = if(modeIdx.value < 2) OffGrey else OffWhite,
-                                            textAlign = TextAlign.Center
-                                        )
-                                        // else display loading animation
-                                    }
+                                    DialougeContentPane(getCompanion(), dialouge.value, if(modeIdx.value < 2) OffGrey else OffWhite)
+                                }
+                            }
+                            else Box(Modifier.weight(1F).fillMaxWidth()){
+                                Box(Modifier.align(Alignment.Center)){
+                                    Text("Start talking\n\nto trigger\n\nLive Interaction", fontSize = 30.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                                 }
                             }
                         }
