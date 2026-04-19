@@ -28,7 +28,7 @@ import com.google.cloud.speech.v2.SpeechClient;
 import com.google.cloud.speech.v2.SpeechRecognitionAlternative; */
 
 import com.zeroplus.dolittle.MainActivity; // Assuming MainActivity.scriptManager is static
-import com.zeroplus.dolittle.model.Speakers;
+import com.zeroplus.dolittle.model.Users;
 import com.zeroplus.dolittle.model.Script;
 
 public class VoiceManager {
@@ -133,7 +133,7 @@ public class VoiceManager {
 
             if (words != null)
                 for (String word : words) {
-                    MainActivity.scriptManager.scripts.add(Pair.create(new Script(word), new Speakers.User("User"))); // TODO: Determine speaker
+                    MainActivity.scriptManager.scripts.add(Pair.create(new Script(word), new Users.Self("User"))); // TODO: Determine speaker
                 }
         }
 

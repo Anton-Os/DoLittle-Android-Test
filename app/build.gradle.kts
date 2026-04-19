@@ -86,6 +86,7 @@ dependencies {
     // implementation("io.ktor:ktor-client-core:$ktor_version")
     // implementation("io.ktor:ktor-client-okhttp:$ktor_version")
     implementation(platform("com.google.firebase:firebase-bom:34.9.0"))
+    // implementation(libs.firebase.vertexai)
     implementation("com.google.firebase:firebase-analytics")
     // implementation("com.google.firebase:firebase-ai")
 

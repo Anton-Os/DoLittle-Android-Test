@@ -1,8 +1,6 @@
 package com.zeroplus.dolittle.ui.widgets
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,18 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
-import com.zeroplus.dolittle.MainActivity
-import com.zeroplus.dolittle.model.Speakers
+import com.zeroplus.dolittle.model.Users
 import com.zeroplus.dolittle.model.Script
 import com.zeroplus.dolittle.model.Companion
 import com.zeroplus.dolittle.ui.theme.OffGrey
 import com.zeroplus.dolittle.ui.theme.OffWhite
 
 @Composable
-fun ScriptContentPane(speaker: Speakers.Speaker, scriptContent: Script.Content){
+fun ScriptContentPane(speaker: Users.Speaker, scriptContent: Script.Content){
     Column(modifier = Modifier.padding(vertical = 20.dp), horizontalAlignment = Alignment.CenterHorizontally){
-        Text(speaker.name)
-
+        // Text(speaker.name)
         Card(
             modifier = Modifier.padding(horizontal = 10.dp).fillMaxWidth(0.9F),
             colors = CardColors(

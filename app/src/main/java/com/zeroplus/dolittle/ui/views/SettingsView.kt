@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 
 import com.zeroplus.dolittle.MainActivity
 import com.zeroplus.dolittle.R
-import com.zeroplus.dolittle.model.Speakers
+import com.zeroplus.dolittle.model.Users
 import com.zeroplus.dolittle.model.Companion
 
 @Composable
@@ -50,9 +50,9 @@ fun CompanionsSettingsView(companions: List<Companion>){
 }
 
 @Composable
-fun AvatarsSettingsView(speakers: List<Speakers.Speaker>){
+fun AvatarsSettingsView(users: List<Users.Speaker>){
     LazyRow(Modifier.fillMaxSize()){
-        items(speakers){ item ->
+        items(users){ item ->
             Card(){
                 // TODO: Include a card for each avatar
             }

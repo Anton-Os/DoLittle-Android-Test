@@ -17,12 +17,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+
 import com.zeroplus.dolittle.model.companions.Angel
 import com.zeroplus.dolittle.model.companions.Brain
 import com.zeroplus.dolittle.model.companions.Demon
 import com.zeroplus.dolittle.model.companions.Ghost
 import com.zeroplus.dolittle.model.managers.PermManager
 import com.zeroplus.dolittle.model.managers.ScriptManager
+import com.zeroplus.dolittle.model.managers.Storage
 import com.zeroplus.dolittle.model.managers.VoiceManager
 import com.zeroplus.dolittle.ui.views.HomeView
 import com.zeroplus.dolittle.ui.views.LaunchView
@@ -41,7 +43,8 @@ class MainActivity : ComponentActivity() {
         voiceManager = VoiceManager(this)
 
         createNotificationChannel("com.dolittle.notification", "DoLittle is here!")
-        // TODO: Invoke Storage.loadScriptsState()
+
+        scriptManager = storage.loadScripts();
 
         setContent {
             navController = rememberNavController()
@@ -80,7 +83,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         // voiceManager.speechRecognizer.destroy()
-        // TODO: Invoke Storage.saveScriptsState()
+
+        storage.saveScripts(scriptManager);
 
         super.onDestroy()
     }
@@ -103,8 +107,10 @@ class MainActivity : ComponentActivity() {
         lateinit var notificationChannel : NotificationChannel
 
         lateinit var voiceManager: VoiceManager
+        lateinit var scriptManager : ScriptManager
+
         @kotlin.jvm.JvmField
-        var scriptManager : ScriptManager = ScriptManager()
+        var storage : Storage = com.zeroplus.dolittle.model.managers.Storage()
         @RequiresApi(Build.VERSION_CODES.O)
         var companions : List<com.zeroplus.dolittle.model.Companion> = listOf(
             Brain(), Ghost(), Angel(), Demon()
