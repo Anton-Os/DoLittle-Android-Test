@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,17 +17,6 @@ import android.speech.RecognitionListener;
 import android.util.Log; // Recommended for logging in Android
 import android.util.Pair;
 
-import com.google.cloud.speech.v1.SpeechClient;
-/* import com.google.cloud.speech.v2.AutoDetectDecodingConfig;
-import com.google.cloud.speech.v2.CreateRecognizerRequest;
-import com.google.cloud.speech.v2.OperationMetadata;
-import com.google.cloud.speech.v2.RecognitionConfig;
-import com.google.cloud.speech.v2.RecognizeRequest;
-import com.google.cloud.speech.v2.RecognizeResponse;
-import com.google.cloud.speech.v2.Recognizer;
-import com.google.cloud.speech.v2.SpeechClient;
-import com.google.cloud.speech.v2.SpeechRecognitionAlternative; */
-
 import com.zeroplus.dolittle.MainActivity; // Assuming MainActivity.scriptManager is static
 import com.zeroplus.dolittle.model.Users;
 import com.zeroplus.dolittle.model.Script;
@@ -34,7 +24,6 @@ import com.zeroplus.dolittle.model.Script;
 public class VoiceManager {
 
     public VoiceManager(Context context) {
-        mediaRecorder = new MediaRecorder(); // Media Recorder
         // Built-In Speech Recognizer
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
         SpeechListener speechListener = new SpeechListener(); // Instantiate the inner class
@@ -47,59 +36,27 @@ public class VoiceManager {
         changeListenState(true);
     }
 
-    public static void setupSpeech(String outputFile) {
-        // Media Recorder
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setOutputFile(outputFile);
-
-        try {
-            mediaRecorder.prepare();
-            mediaRecorder.start();
-        } catch (IOException e) {
-            Log.e("VoiceManager", "Recording failed: $e");
-            throw new RuntimeException(e);
-        }
-
-        // Google Speech-to-Text
-        // try { speechClient = SpeechClient.create(); }
-        // catch (IOException e) { throw new RuntimeException(e); }
-    }
-
-    public static boolean getIsListening(){ return isListening; }
-
     public void destroy() {
         if (speechRecognizer != null) speechRecognizer.destroy();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
-    private static class SpeechListener implements RecognitionListener {
+    protected static class SpeechListener implements RecognitionListener {
 
         @Override
-        public void onReadyForSpeech(Bundle params) {
-            Log.d("VoiceManager", "onReadyForSpeech() triggered");
-        }
+        public void onReadyForSpeech(Bundle params) { Log.d("VoiceManager", "onReadyForSpeech() triggered"); }
 
         @Override
-        public void onBeginningOfSpeech() {
-            Log.d("VoiceManager", "onBeginningOfSpeech() triggered");
-        }
+        public void onBeginningOfSpeech() { Log.d("VoiceManager", "onBeginningOfSpeech() triggered"); }
 
         @Override
-        public void onRmsChanged(float rmsdB) {
-            Log.d("VoiceManager", "onRmsChanged() triggered");
-        }
+        public void onRmsChanged(float rmsdB) { Log.d("VoiceManager", "onRmsChanged() triggered"); }
 
         @Override
-        public void onBufferReceived(byte[] buffer) {
-            Log.d("VoiceManager", "onBufferReceived() triggered");
-        }
+        public void onBufferReceived(byte[] buffer) { Log.d("VoiceManager", "onBufferReceived() triggered"); }
 
         @Override
-        public void onEndOfSpeech() {
-            Log.d("VoiceManager", "onEndOfSpeech() triggered");
-        }
+        public void onEndOfSpeech() { Log.d("VoiceManager", "onEndOfSpeech() triggered"); }
 
         @Override
         public void onError(int error) {
@@ -122,9 +79,7 @@ public class VoiceManager {
         }
 
         @Override
-        public void onEvent(int eventType, Bundle params) {
-            Log.d("VoiceManager", "onEvent() triggered, eventType: " + eventType);
-        }
+        public void onEvent(int eventType, Bundle params) { Log.d("VoiceManager", "onEvent() triggered, eventType: " + eventType); }
 
         @SuppressLint("NewApi")
         public void analyzeSpeech(Bundle bundle) {
@@ -137,26 +92,24 @@ public class VoiceManager {
                 }
         }
 
-        private static ListenerCallback listenerCallback;
+        protected static ListenerCallback listenerCallback;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
-    private static void changeListenState(boolean isListeningArg){
+    protected static void changeListenState(boolean isListeningArg){
         isListening = isListeningArg;
         SpeechListener.listenerCallback.changeListenState(isListening);
 
         if(!isListening && isPersistent) listen(savedIntent, SpeechListener.listenerCallback); // launch listen again persistently
     }
 
-    private static android.speech.SpeechRecognizer speechRecognizer;
+    protected static android.speech.SpeechRecognizer speechRecognizer;
 
-    private static Intent savedIntent;
+    protected static Intent savedIntent;
 
-    private static MediaRecorder mediaRecorder;
+    public static boolean getIsListening(){ return isListening; }
 
-    private static SpeechClient speechClient; // From Google Speech-to-Text
-
-    private static boolean isListening = false;
+    protected static boolean isListening = false;
 
     public static boolean isPersistent = true;
 

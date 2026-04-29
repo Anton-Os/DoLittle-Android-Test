@@ -59,7 +59,7 @@ public class Companion {
 
     // public void setDialouge(){}
 
-    protected int[] colorCodes = { 0xFFfffef0, 0xFFffd86b, 0xFFfff200, 0xFF111111 };
+    protected int[] colorCodes = { 0xFFfffef0, 0xFFffd86b, 0xFFfff200, 0xFF2b2b29 };
 
     public Map<Script.Content, String> getDialouges(){ return Collections.unmodifiableMap(dialougesMap); }
     // protected ArrayList<Script.Content> dialouges = new ArrayList<>();

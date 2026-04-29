@@ -95,7 +95,11 @@ dependencies {
     implementation("androidx.graphics:graphics-shapes:1.0.1")
     implementation ("com.github.massoudss:waveformSeekBar:5.0.2")
     implementation ("com.github.lincollincol:amplituda:2.2.2")
+    implementation ("com.google.cloud:google-cloud-speech:0.84.0-beta")
+    implementation ("com.google.protobuf:protobuf-java:3.25.3")
+    implementation ("com.google.api.grpc:grpc-google-cloud-speech-v1p1beta1:0.63.0")
     // implementation( "com.google.auth:google-auth-library-oauth2-http:0.26.0")
     // implementation("io.grpc:grpc-okhttp:1.38.1")
     // implementation("io.grpc:grpc-stub:1.39.0")
+    implementation(libs.grpc.protobuf)
 }
